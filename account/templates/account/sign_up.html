@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title> دانشیار | ثبت نام</title>
+</head>
+<body class="bg-light">
+
+<div class="container">
+
+    <div class="row px-2">
+
+        <div class="col-lg-6 col-md-7 col-10 mx-auto bg-white mt-5 rounded text-center shadow-sm py-3">
+
+            <img src="{% static 'images/logo.jpg' %}" alt="Daneshyar" class="d-block mx-auto mb-4"><!-- logo -->
+
+            <form method="post"><!-- start signup form -->
+                {% csrf_token %}
+                {% if  form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+                {% elif messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% else %}
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <div class="alert alert-danger" role="alert">{{ field.errors }}</div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <div class="input-group signup-form mb-4">
+
+                    <span class="input-group-text"><i class="fa fa-user"></i></span>
+
+                    {{ form.username }}
+
+                </div>
+
+                <div class="input-group signup-form mb-4">
+
+                    <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+
+                    {{ form.email }}
+
+                </div>
+
+                <div class="input-group signup-form mb-4">
+
+                    <span class="input-group-text"><i class="fa fa-phone"></i></span>
+
+                    {{ form.phone }}
+
+                </div>
+
+                <div class="input-group signup-form mb-4">
+
+                    <span class="input-group-text"><i class="fa fa-lock"></i></span>
+
+                    {{ form.password1 }}
+
+                </div>
+
+                <div class="input-group signup-form mb-4">
+
+                    <span class="input-group-text"><i class="fa fa-lock"></i></span>
+
+                    {{ form.password2 }}
+
+
+                </div>
+
+                <div class="form-check">
+
+                    <input class="form-check-input form-check-input-custom" type="checkbox" id="customCheck"
+                           name="check" checked>
+
+                    <label class="form-check-label line-height font-12" for="customCheck">
+
+                        <a href="#" class="text-dark under-line">حریم خصوصی</a> و <a href="#"
+                                                                                     class="text-dark under-line">شرایط
+                        و قوانین</a> استفاده از خدمات سایت دانشیار را مطالعه نموده و با کلیه موارد آن موافقم.
+
+                    </label>
+
+                </div>
+
+                <button type="submit" class="btn btn-lg btn-warning d-block mx-auto px-5 font-13 vazir-font my-3">ثبت
+                    نام
+                </button>
+
+            </form><!-- end signup form -->
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-6 col-md-7 col-10 mx-auto bg-white mt-3 mb-5 rounded shadow-sm py-3 text-center">
+            <!-- start login box -->
+
+            <p class="font-13 mt-3">قبلا در سایت ثبت نام کرده اید؟ <a href="login.html" class="text-dark under-line">وارد
+                شوید</a></p>
+
+        </div><!-- end login box -->
+
+    </div>
+
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
