@@ -1,7 +1,9 @@
 from django import forms
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
 from .models import MyUser
+from django.contrib.auth.views import PasswordResetForm, SetPasswordForm
 
 
 class UserCreationForm(forms.ModelForm):
@@ -39,7 +41,6 @@ class UserCreationForm(forms.ModelForm):
         if MyUser.objects.filter(phone=phone).exists():
             raise ValidationError('شماره تلفن قبلا ثبت نام شده است.', code='phone_exist')
 
-
     def clean_password2(self):
         # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")
@@ -68,3 +69,40 @@ class UserChangeForm(forms.ModelForm):
     class Meta:
         model = MyUser
         fields = ["phone", "password", "is_active", "is_admin"]
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control form-control-lg', 'type': 'text', 'placeholder': 'نام کاربری'}))
+    password = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control form-control-lg', 'type': 'password', 'placeholder': 'رمز عبور'}))
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        if authenticate(username=username, password=password) is None:
+            raise ValidationError('نام کاربری یا رمز عبور اشتباه می باشد.', code='invalid_login')
+
+class MyPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(widget=forms.TextInput( attrs={'class': 'form-control form-control-lg', 'placeholder': 'ایمیل', 'type': 'email'}))
+
+    def clean(self):
+        email = self.cleaned_data.get('email')
+        if not MyUser.objects.filter(email=email).exists():
+            raise ValidationError('کاربری با ایمیل وارد شده یافت نشد.', code='email_not_found')
+
+class MyPasswordConfirmForm(SetPasswordForm):
+    new_password1 = forms.CharField(label="Password", widget=forms.PasswordInput(
+        attrs={'class': 'form-control form-control-lg', 'type': 'password', 'placeholder': 'رمز عبور'}))
+    new_password2 = forms.CharField(
+        label="Password confirmation", widget=forms.PasswordInput(
+            attrs={'class': 'form-control form-control-lg', 'type': 'password', 'placeholder': 'تکرار رمز عبور'})
+    )
+
+    def clean_new_password2(self):
+        # Check that the two password entries match
+        password1 = self.cleaned_data.get("new_password1")
+        password2 = self.cleaned_data.get("new_password2")
+        if password1 and password2 and password1 != password2:
+            raise ValidationError("گذرواژه ها مشابه نیستند", code='password_reset_match')
+        return password2

@@ -13,6 +13,8 @@ import os.path
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -130,3 +132,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "account.MyUser"
 AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend", 'account.authentications.AuthWithEmail', 'account.authentications.AuthWithUsername']
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = BASE_DIR / 'emails'
+

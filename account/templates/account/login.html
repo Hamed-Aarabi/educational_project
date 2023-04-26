@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title> دانشیار | ورود </title>
+</head>
+<body class="bg-light">
+
+<div class="container">
+
+    <div class="row px-2">
+
+        <div class="col-lg-6 col-md-7 col-10 mx-auto bg-white mt-5 rounded shadow-sm py-3">
+
+            <img src="{% static 'images/logo.jpg' %}" alt="Daneshyar" class="d-block mx-auto mb-4"><!-- logo -->
+
+            <form method="post"><!-- start login form -->
+                {% csrf_token %}
+                {% if  form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="input-group signup-form mb-4">
+
+                    <span class="input-group-text"><i class="fa fa-user"></i></span>
+
+                    {{ form.username }}
+
+                </div>
+
+                <div class="input-group signup-form mb-4">
+
+                    <span class="input-group-text"><i class="fa fa-lock"></i></span>
+
+                    {{ form.password }}
+
+                </div>
+
+                <div class="form-check">
+
+                    <input class="form-check-input form-check-input-custom" type="checkbox" id="customCheck"
+                           name="remember" checked>
+
+                    <label class="form-check-label line-height font-12 ms-1" for="customCheck">
+
+                        مرا به خاطر داشته باش
+
+                    </label>
+
+                </div>
+
+                <button type="submit" class="btn btn-lg btn-warning d-block mx-auto px-5 font-13 vazir-font my-3">ورود
+                </button>
+
+            </form><!-- end login form -->
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-6 col-md-7 col-10 mx-auto bg-white mt-3 mb-5 rounded shadow-sm py-3 text-center">
+            <!-- start remember box -->
+
+            <p class="font-13 mt-3">رمز عبور خود را فراموش کرده اید؟<a href="{% url 'account:password_reset' %}"
+                                                                       class="text-dark under-line ms-1">بازیابی رمز
+                عبور </a></p>
+
+            <p class="font-13 mt-2">هنوز در سایت ثبت نام نکرده اید ؟<a href="{% url 'account:signup' %}"
+                                                                       class="text-dark under-line ms-1">ثبت نام </a>
+            </p>
+
+        </div><!-- end remember box -->
+
+    </div>
+
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
