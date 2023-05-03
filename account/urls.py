@@ -6,6 +6,8 @@ app_name= 'account'
 
 
 urlpatterns = [
+    path('userpanel/<str:username>', views.UserPanelView.as_view(), name='user_panel'),
+    path('userpanel/<str:username>/update', views.UserUpdatingView.as_view(), name='user_panel_update'),
     path('signup',views.SignUpView.as_view(), name='signup'),
     path('login',views.LoginView.as_view(), name='login'),
     path('logout', views.logout_view, name='logout'),

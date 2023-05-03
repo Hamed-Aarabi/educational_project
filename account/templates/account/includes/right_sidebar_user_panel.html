@@ -1,0 +1,40 @@
+{% load static %}
+<div class="col-lg-3 "><!-- start right sidebar -->
+
+    <div class="card border-0 shadow-sm bg-info my-3 p-3"><!-- start avatar box -->
+
+        {% if user.image %}
+            <img src="{{ user.image.url }}" class="avatar">
+        {% else %}
+            <img src="{% static 'images/avatar.png' %}" class="avatar">
+        {% endif %}
+
+        <p class="font-14 text-white text-center">{{ user.first_name }} {{ user.last_name }}
+            عزیز سلام !</p>
+
+    </div><!-- end avatar box -->
+
+    <div class="list-group mb-3"><!-- start sidebar menu -->
+
+        <a href="{% url 'account:user_panel' user.username %}" class="list-group-item list-group-item-action font-13 text-{% if request.path == profile  %}info{% else %}dark{% endif %}"> <i
+                class="fa fa-home align-middle me-2 font-13 text-secondary"></i>پیشخوان</a>
+
+        <a href="profile-course.html" class="list-group-item list-group-item-action font-13 text-dark"><i
+                class="fas fa-graduation-cap align-middle me-2 font-15  text-secondary"></i>دوره های شما</a>
+
+        <a href="profile-comments.html" class="list-group-item list-group-item-action font-13 text-dark"><i
+                class="far fa-comment align-middle me-2 font-13  text-secondary"></i>نظرات </a>
+
+        <a href="profile-tickets.html" class="list-group-item list-group-item-action font-13 text-dark"><i
+                class="fas fa-tags align-middle me-2 font-12 text-secondary"></i>تیکت ها </a>
+
+        <a href="{% url 'account:user_panel_update' request.user.username %}" class="list-group-item list-group-item-action font-13 text-{% if request.path == profile_update  %}info{% else %}dark{% endif %}"><i
+                class="fa fa-user-circle align-middle me-2 font-13  text-secondary"></i>جزئیات حساب
+            کاربری</a>
+
+        <a href="{% url 'account:logout' %}" class="list-group-item list-group-item-action font-13 text-dark"><i
+                class="fas fa-sign-out-alt align-middle me-2 font-13  text-secondary"></i> خروج</a>
+
+    </div><!-- end sidebar menu -->
+
+</div>

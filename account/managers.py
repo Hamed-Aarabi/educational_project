@@ -27,6 +27,8 @@ class MyUserManager(BaseUserManager):
         """
         user = self.create_user(
             phone,
+            email=None,
+            username=None,
             password=password,
 
         )

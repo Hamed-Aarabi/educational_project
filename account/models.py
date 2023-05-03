@@ -10,10 +10,10 @@ CHOICE_SEX = (
 
 
 class MyUser(AbstractBaseUser):
-    email = models.EmailField(verbose_name="آدرس ایمیل", max_length=255, unique=True)
+    email = models.EmailField(verbose_name="آدرس ایمیل", max_length=255, unique=True, null=True)
     first_name = models.CharField(verbose_name='نام', max_length=255)
     last_name = models.CharField(verbose_name='نام خانوادگی', max_length=255)
-    username = models.CharField(verbose_name='نام کاربری', max_length=255)
+    username = models.CharField(verbose_name='نام کاربری', max_length=255, null=True)
     image = models.ImageField(upload_to='profiles')
     phone = models.CharField(max_length=12, unique=True, verbose_name='شماره تلفن')
     sex = models.CharField(choices=CHOICE_SEX, max_length=5, verbose_name='جنسیت')

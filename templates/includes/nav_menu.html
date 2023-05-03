@@ -1,0 +1,109 @@
+{% load static %}
+<nav class="d-none d-lg-block navigation shadow-sm"><!-- start nav menu -->
+
+    <div class="container">
+
+        <ul class="main-menu">
+
+            <li><a href="{% url 'home' %}">صفحه اصلی</a></li>
+
+            <li><a href="#">دوره های آموزشی<i class="fa fa-angle-down align-middle ms-1"></i></a>
+
+                <ul class="mega-menu row ps-0"><!-- start mega menu -->
+
+                    <li class="col-4 mega-menu-box">
+
+                        <ul class="ps-0">
+
+                            <li class="menu-title"><a href="category.html"><i
+                                    class="fa fa-angle-left align-middle text-warning me-1"></i>دوره های آموزش برنامه
+                                نویسی</a></li>
+
+                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
+
+                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
+
+                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
+
+                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="col-4 mega-menu-box">
+
+                        <ul class="ps-0">
+
+                            <li class="menu-title"><a href="category.html"><i
+                                    class="fa fa-angle-left align-middle text-warning me-1"></i>دوره های آموزش برنامه
+                                نویسی</a></li>
+
+                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
+
+                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
+
+                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
+
+                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li class="col-4 mega-menu-box">
+
+                        <ul class="ps-0">
+
+                            <li class="menu-title"><a href="category.html"><i
+                                    class="fa fa-angle-left align-middle text-warning me-1"></i>دوره های آموزش برنامه
+                                نویسی</a></li>
+
+                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
+
+                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
+
+                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
+
+                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
+
+                        </ul>
+
+                    </li>
+
+                </ul><!-- end mega menu -->
+
+            </li>
+
+            <li><a href="#">صفحات<i class="fa fa-angle-down align-middle ms-1"></i></a>
+
+                <ul class="sub-menu"><!-- start sub menu -->
+                    {% if not request.user.is_authenticated %}
+                        <li><a href="{% url 'account:signup' %}">ثبت نام</a></li>
+
+                        <li><a href="{% url 'account:login' %}">ورود</a></li>
+
+                        <li><a href="{% url 'account:password_reset' %}">فراموشی رمز عبور</a></li>
+                    {% else %}
+                        <li><a href="{% url 'account:user_panel' request.user.username %}">پروفایل کاربر</a></li>
+
+                        <li><a href="teach.html">درخواست تدریس</a></li>
+
+                        <li><a href="cart.html">سبد خرید </a></li>
+                    {% endif %}
+
+                    <li><a href="404.html">صفحه 404</a></li>
+
+                </ul><!-- end sub menu -->
+
+            </li>
+
+            <li><a href="blog.html">بلاگ</a></li>
+
+            <li><a href="contactus.html">تماس با ما</a></li>
+
+        </ul>
+
+    </div>
+
+</nav>

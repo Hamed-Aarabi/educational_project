@@ -3,11 +3,10 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
     PasswordResetCompleteView
 from django.urls import reverse_lazy
-from django.views.generic import FormView, TemplateView, View
-from .forms import UserCreationForm, LoginForm, MyPasswordResetForm, MyPasswordConfirmForm
+from django.views.generic import FormView, TemplateView, View, UpdateView
+from .forms import UserCreationForm, LoginForm, MyPasswordResetForm, MyPasswordConfirmForm, UserChangeForm
 from .models import MyUser
 from django.shortcuts import redirect, render
-
 
 
 class SignUpView(FormView):
@@ -60,6 +59,27 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
 
 class MyPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'account/password_reset_complete.html'
+
+
+class UserPanelView(View):
+    def get(self, request, username):
+        if request.user.username != username:
+            return redirect('account:user_panel', request.user.username)
+        user = MyUser.objects.get(username=username)
+        return render(request, 'account/user_panel.html', {'user': user})
+
+class UserUpdatingView(UpdateView):
+    template_name = 'account/user_panel_update.html'
+    form_class = UserChangeForm
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('account:user_panel', kwargs={'username':self.kwargs.get('username')})
+
+
+
+    def get_object(self, queryset=None):
+        queryset = MyUser.objects.get(username=self.kwargs.get('username'))
+        return queryset
 
 
 def logout_view(request):

@@ -1,0 +1,27 @@
+{% load  static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    {% include 'includes/header_refs.html' %}
+    <title> دانشیار | صفحه اصلی</title>
+</head>
+<body>
+
+
+<!-- header -->
+{% include 'includes/header.html' %}
+<!-- end header -->
+
+{% include 'includes/nav_menu.html' %}<!-- end nav menu -->
+
+
+{% block content %}
+{% endblock %}
+
+{% include 'includes/footer.html' %}<!-- end footer -->
+
+<!-- footer refs-->
+{% include 'includes/footer_refs.html' %}
+<!-- end footer refs -->
+</body>
+</html>

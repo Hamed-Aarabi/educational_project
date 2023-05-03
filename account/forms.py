@@ -64,11 +64,31 @@ class UserChangeForm(forms.ModelForm):
     disabled password hash display field.
     """
 
-    password = ReadOnlyPasswordHashField()
+    # password = ReadOnlyPasswordHashField()
+    SEX_CHOICES = (
+        ('man', 'مرد'),
+        ('woman', 'زن'),
+        ('other', 'دیگر'),
+    )
 
+    sex = forms.ChoiceField(choices=SEX_CHOICES)
     class Meta:
         model = MyUser
-        fields = ["phone", "password", "is_active", "is_admin"]
+        fields = ('email', 'username', 'first_name', 'last_name', 'image', 'phone', 'sex')
+
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control form-control-lg', 'id': 'email', 'type': 'email'}),
+            'username': forms.TextInput(
+                attrs={'class': 'form-control form-control-lg', 'id': 'username', 'type': 'text'}),
+            'first_name': forms.TextInput(
+                attrs={'class': 'form-control form-control-lg', 'id': 'name', 'type': 'text'}),
+            'last_name': forms.TextInput(
+                attrs={'class': 'form-control form-control-lg', 'id': 'lastname', 'type': 'text'}),
+            'image': forms.FileInput(attrs={'class': 'form-control form-control-lg', 'id': 'avatar', 'type': 'file'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control form-control-lg', 'id': 'phone', 'type': 'tel'}),
+             # 'sex': forms.TextInput(attrs={'class': 'form-control form-control-lg', 'id': 'sex'}),
+
+        }
 
 
 class LoginForm(forms.Form):
@@ -83,13 +103,16 @@ class LoginForm(forms.Form):
         if authenticate(username=username, password=password) is None:
             raise ValidationError('نام کاربری یا رمز عبور اشتباه می باشد.', code='invalid_login')
 
+
 class MyPasswordResetForm(PasswordResetForm):
-    email = forms.EmailField(widget=forms.TextInput( attrs={'class': 'form-control form-control-lg', 'placeholder': 'ایمیل', 'type': 'email'}))
+    email = forms.EmailField(widget=forms.TextInput(
+        attrs={'class': 'form-control form-control-lg', 'placeholder': 'ایمیل', 'type': 'email'}))
 
     def clean(self):
         email = self.cleaned_data.get('email')
         if not MyUser.objects.filter(email=email).exists():
             raise ValidationError('کاربری با ایمیل وارد شده یافت نشد.', code='email_not_found')
+
 
 class MyPasswordConfirmForm(SetPasswordForm):
     new_password1 = forms.CharField(label="Password", widget=forms.PasswordInput(

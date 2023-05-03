@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+<head>
+    <title> دانشیار | پروفایل </title>
+</head>
+
+{% block content %}
+    <div class="container">
+
+        <div class="row">
+
+            {% include 'account/includes/right_sidebar_user_panel.html' %}<!-- end right sidebar -->
+
+            <div class="col-lg-9">
+
+                <div class="card my-3 p-3 shadow-sm personal-info-form">
+
+                    <p class="font-14">جزئیات حساب کاربری شما :</p>
+
+                    <form method="post" enctype="multipart/form-data"><!-- start personal info form -->
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+
+                            <label for="name" class="form-label font-13 ">نام :</label>
+
+                            {{ form.first_name }}
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label for="lastname" class="form-label font-13 ">نام خانوادگی :</label>
+
+                            {{ form.last_name }}
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label for="username" class="form-label font-13 "> نام کاربری : </label>
+
+                            {{ form.username }}
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label for="email" class="form-label font-13 "> ایمیل: </label>
+
+                            {{ form.email }}
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label for="phone" class="form-label font-13 "> تلفن: </label>
+
+                            {{ form.phone }}
+
+                        </div>
+
+                        <label for="password" class="form-label font-13 mb-2"> عکس پروفایل : </label>
+
+                        <div class="input-group mb-3">
+
+                            {{ form.image }}
+
+                        </div>
+                        <div class="mb-3">
+
+                            <label for="sex" class="form-label font-13 mb-2">جنسیت :</label>
+
+                            <select class="form-select" name="sex">
+
+                                    <option>{{ form.sex.0 }}</option>
+                                    <option>{{ form.sex.1 }}</option>
+                                    <option>{{ form.sex.2}}</option>
+
+                            </select>
+
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label for="email" class="form-label font-13 mb-2">دریافت خبرنامه :</label>
+
+                            <select class="form-select">
+
+                                <option>بله</option>
+
+                                <option>خیر</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <button type="submit" class="btn btn-lg btn-info btn-block font-13 mt-4">ذخیره تغییرات</button>
+
+                    </form><!-- end personal info form -->
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}
