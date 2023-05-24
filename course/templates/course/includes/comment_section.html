@@ -1,0 +1,244 @@
+{% load static %}
+<div class="container"><!-- start nav box -->
+
+    <div class="row px-2">
+
+        <div class="col-12 p-0">
+
+            <ul class="nav nav-tabs nav-tabs-custome"><!-- start nav tabs -->
+
+                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#comments">دیدگاه دانش
+                    آموختگان </a></li>
+
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#description">معرفی مدرس</a>
+                </li>
+
+            </ul><!-- end nav box -->
+
+            <div class="tab-content border border-top-0 pt-4 pb-2 px-4"><!-- start tab contents -->
+
+
+                <div class="tab-pane active" id="comments"><!-- start comment tab -->
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="row"><!-- start comment form -->
+
+                            <div class="col">
+
+                                <input type="text" name="name" class="form-control form-control-lg"
+                                       placeholder="نام و نام خانوادگی">
+
+                            </div>
+
+
+                            <div class="col">
+
+                                <input name="email" type="text" class="form-control form-control-lg"
+                                       placeholder="ایمیل">
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="row mt-3">
+
+                            <div class="col-12">
+
+                                <textarea name="text" id="text" class="form-control" rows="5"
+                                          placeholder="متن دیدگاه شما"></textarea>
+
+                                <button type="submit" href="" class="btn btn-lg btn-info float-end font-13 my-3">ثبت
+                                    دیدگاه
+                                </button>
+
+                            </div>
+                            <div class="col">
+
+                                <input type="hidden" name="reply_id" class="form-control form-control-lg"
+                                       id="reply_id" value="">
+
+                            </div>
+
+                        </div><!-- end comment form -->
+                    </form>
+
+                    <div class="row"><!-- start comment box -->
+
+                        {% for comment in page_obj %}
+                            {% if not comment.reply_to %}
+                                <div class="col-12 bg-light shadow-sm mb-3 p-2 pb-3"><!-- start comment item -->
+
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <div class="d-flex">
+
+                                            <div>
+                                                <img src="{% static 'images/avatar.png' %}" class="comment-pic">
+
+
+                                            </div>
+
+                                            <div>
+
+                                                <span class="font-13 d-block ms-3 mt-3">{{ comment.user }}</span>
+
+
+                                                <div class="d-flex ms-3 mt-3">
+
+                                                    <i class="fa fa-star me-1 font-13 text-warning"></i>
+
+                                                    <i class="fa fa-star me-1 font-13 text-warning"></i>
+
+                                                    <i class="fa fa-star me-1 font-13 text-warning"></i>
+
+                                                    <i class="fa fa-star me-1 font-13 text-warning"></i>
+
+                                                    <i class="fa fa-star me-1 font-13 text-warning"></i>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <span class="font-12 text-muted"> <i
+                                                class="fa fa-calendar font-14 me-2"></i> {{ comment.created_at.day }} {{ comment.created_at|date:"M" }} {{ comment.created_at.year }} </span>
+
+                                    </div>
+
+                                    <p class="font-13 vazir-font line-height px-5 mt-3">{{ comment.text }}</p>
+
+                                    <div class="d-fex px-5">
+
+                                <span class="font-12 me-4"><a onclick="heart_comment('{{ course.slug }}', '{{ comment.id }}')"><i class="far fa-heart text-danger font-15 me-1"></i>({{ comment.total_heart }})</a> </span>
+
+                                        <span class="font-12 me-4"><a onclick="like_comment('{{ course.slug }}', '{{ comment.id }}')"><i class="far fa-thumbs-up text-success font-15 me-1"></i>({{ comment.total_likes }})</a></span>
+
+                                        <span class="font-12 me-4"><a onclick="dislike_comment('{{ course.slug }}', '{{ comment.id }}')" ><i class="far fa-thumbs-down text-muted font-15 me-1"></i>({{ comment.total_dislikes }})</a></span>
+                                        <span class="font-12 me-4"><a
+                                                onclick="comment_reply('{{ comment.id }}','{{ comment.user }}')"><i
+                                                class="fa fa-reply"
+                                                aria-hidden="true"></i></a></span>
+
+                                    </div>
+                                    {% if comment.comment_replys %}
+                                        {% for reply in comment.comment_replys.all %}
+                                            <div class="bg-white shadow-sm mx-5 mt-3 p-3 rounded">
+                                                <!-- start reply box -->
+
+                                                <div class="d-flex justify-content-between align-items-center">
+
+                                                    <p class="font-13 text-danger">{{ reply.user }}</p>
+
+                                                    <span class="font-12 text-muted"> <i
+                                                            class="fa fa-calendar font-14 me-2"></i> {{ comment.created_at.day }} {{ comment.created_at|date:"M" }} {{ comment.created_at.year }} </span>
+
+                                                </div>
+
+                                                <p class="font-13 vazir-font line-height">{{ reply.text }}</p>
+
+                                            </div><!-- end reply box -->
+                                        {% endfor %}
+                                    {% endif %}
+
+                                </div><!-- end comment item -->
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </div><!-- end comment box -->
+                    {% if page_obj.has_other_pages %}
+                        <ul class="pagination justify-content-center my-4 font-13"><!-- start pagination -->
+                            {% if page_obj.has_previous %}
+                                <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}"
+                                                         class="page-link">&lsaquo;</a>
+                                </li>
+                            {% endif %}
+                            {% for i in page_obj.paginator.page_range %}
+                                {% if i == page_obj.number %}
+                                    <li class="page-item active"><a href="?page={{ i }}" class="page-link">{{ i }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item"><a href="?page={{ i }}" class="page-link">{{ i }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li class="page-item"><a href="?page={{ page_obj.next_page_number }}"
+                                                         class="page-link">&rsaquo;</a></li>
+                            {% endif %}
+
+                        </ul><!-- end pagination -->
+                    {% endif %}
+
+                </div><!-- end comment tab -->
+
+
+                <div class="tab-pane fade" id="description"><!-- start description tab -->
+
+                    <div class="row mt-5">
+
+                        <div class="col-12">
+
+                            <div class="row">
+
+                                <div class="col-lg-3 col-md-4"><img src="{{ course.tutor.image.url }}"
+                                                                    class="img-fluid rounded my-3 mx-auto d-block">
+                                </div>
+
+                                <div class="col-lg-9 col-md-8">
+
+                                    <p class="mt-4">{{ course.tutor.full_name }}</p>
+
+                                    <span class="font-12 text-muted me-4"><i
+                                            class="fa fa-video me-1 text-danger"></i>{{ course.tutor.tutor_videos.all.count }} ویدئو</span>
+
+                                    <span class="font-12 text-muted me-4"><i
+                                            class="fa fa-forward me-1 text-success"></i>{{ course.tutor.tutor_courses.all.count }} دوره</span>
+
+                                    <span class="font-12 text-muted me-4"><i
+                                            class="fa fa-user me-1"></i> عضویت 4سال</span>
+
+                                    <p class="font-13 line-height vazir-font text-justify my-3">لورم ایپسوم متن
+                                        ساختگی
+                                        با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
+                                        از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان
+                                        که
+                                        لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود
+                                        ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده
+                                        شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را
+                                        برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی
+                                        ایجاد
+                                        کرد.
+                                    </p>
+
+                                    <div class="teacher-social-media">
+
+                                        <a href="#"><i class="fab fa-instagram"></i></a>
+
+                                        <a href="#"><i class="fab fa-twitter"></i></a>
+
+                                        <a href="#"><i class="fab fa-telegram"></i></a>
+
+                                        <a href="#"><i class="fab fa-linkedin"></i></a>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div><!-- end description tab -->
+
+            </div><!-- end tab contents -->
+
+        </div>
+
+    </div>
+
+</div><!-- end nav box -->

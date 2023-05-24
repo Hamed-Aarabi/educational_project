@@ -75,8 +75,6 @@ class UserUpdatingView(UpdateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy('account:user_panel', kwargs={'username':self.kwargs.get('username')})
 
-
-
     def get_object(self, queryset=None):
         queryset = MyUser.objects.get(username=self.kwargs.get('username'))
         return queryset

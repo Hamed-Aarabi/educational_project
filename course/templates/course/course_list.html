@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="container my-3"><!-- start breadcrumb -->
+
+        <ul class="breadcrumb shadow-sm bg-light p-2">
+
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="font-12 vazir-font text-secondary">صفحه
+                اصلی</a></li>
+
+            <li class="breadcrumb-item"><a href="{% url 'course:all' %}"
+                                           class="ps-2 font-12 vazir-font  text-secondary">دوره های آموزشی</a>
+            </li>
+
+        </ul>
+
+    </div><!-- end breadcrumb -->
+
+    <div class="container">
+
+        <div class="row">
+
+            {% include 'course/includes/course_side_bar.html' %} <!-- end side bar -->
+
+            <div class="col-lg-9">
+
+                <div class="row"><!-- start course boxes -->
+                    {% for course in courses %}
+                        <div class="col-lg-4 col-sm-6 "><!-- start course item -->
+
+                            <div class="card custom-card mb-3 shadow-sm">
+
+                                <div class="sub-layer">
+
+                                    <img src="{{ course.image.url }}" class="img-fluid" alt="{{ course.title }}"
+                                         style="height: 160px; width: 310px">
+
+                                    <div class="over-layer">
+
+                                        <a href="{% url 'course:detail' course.slug %}" class="btn btn-info">مشاهده و
+                                            خرید</a>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="card-body">
+
+                                    <a href="{% url 'course:detail' course.slug %}"
+                                       class="text-dark d-block mb-2">{{ course.title }}</a>
+
+                                    <p class="font-13 text-justify line-height vazir-font">{{ course.description|truncatechars:10 }}</p>
+
+                                </div>
+
+                                <div class="card-footer">
+
+                                    <img src="{{ course.tutor.image.url }}" class="team-icon"
+                                         alt="{{ course.tutor.full_name }}">
+
+                                    <span class="font-12 vazir-font">{{ course.tutor.full_name }}</span>
+
+                                    <div class="float-end mt-1">
+
+                                        <span class="text-success font-12">{{ course.price }}</span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div><!-- end course item -->
+                    {% endfor %}
+
+
+                </div><!-- end course boxes -->
+
+                {% if is_paginated %}
+                    <ul class="pagination justify-content-center my-4 font-13"><!-- start pagination -->
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">&lsaquo;</a>
+                            </li>
+                        {% endif %}
+                        {% for i in page_obj.paginator.page_range %}
+                            {% if i == page_obj.number %}
+                                <li class="page-item active"><a href="?page={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">{{ i }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a href="?page={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-link">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}}" class="page-link">&rsaquo;</a></li>
+                        {% endif %}
+
+                    </ul><!-- end pagination -->
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

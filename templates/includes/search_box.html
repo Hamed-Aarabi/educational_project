@@ -1,0 +1,16 @@
+{% load static %}
+<div class="col-lg-6 d-flex align-items-center ps-5 pe-0"><!-- start search box -->
+    <form action="{% url 'course:search' %}">
+        <div class="input-group">
+
+            <input type="search" name="q" class="form-control form-control-lg"
+                   placeholder="چی دوست داری یاد بگیری ؟! ...">
+
+            <button type="submit" class="btn btn-secondary"><img src="{% static 'images/search.png' %}"
+                                                                 class="search-btn"></button>
+
+        </div>
+    </form>
+
+</div>
+

@@ -6,18 +6,7 @@
 
         <div class="col-lg-2"><img src="{% static 'images/logo.jpg' %}" alt="Daneshyar"></div><!-- logo -->
 
-        <div class="col-lg-6 d-flex align-items-center ps-5 pe-0"><!-- start search box -->
-
-            <div class="input-group">
-
-                <input type="search" class="form-control form-control-lg" placeholder="چی دوست داری یاد بگیری ؟! ...">
-
-                <button type="submit" class="btn btn-secondary"><img src="{% static 'images/search.png' %}"
-                                                                     class="search-btn"></button>
-
-            </div>
-
-        </div><!-- end search box -->
+        {% include 'includes/search_box.html' %}<!-- end search box -->
 
         <div class="col-lg-2 d-flex align-items-center justify-content-end"><!-- start shopping bag-->
 

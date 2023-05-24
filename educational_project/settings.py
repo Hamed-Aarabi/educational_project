@@ -40,11 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'active_link',
     #My App's
     'account.apps.AccountConfig',
     'course.apps.CourseConfig',
 
     'django_cleanup.apps.CleanupConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -71,7 +73,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'context_processors.context_processors.user_panel_urls'
+                # 'context_processors.context_processors.user_panel_urls',
+
             ],
         },
     },
@@ -115,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'fa-ir'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 

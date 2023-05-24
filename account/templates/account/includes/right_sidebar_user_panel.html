@@ -1,4 +1,5 @@
 {% load static %}
+{% load active_link_tags %}
 <div class="col-lg-3 "><!-- start right sidebar -->
 
     <div class="card border-0 shadow-sm bg-info my-3 p-3"><!-- start avatar box -->
@@ -16,7 +17,7 @@
 
     <div class="list-group mb-3"><!-- start sidebar menu -->
 
-        <a href="{% url 'account:user_panel' user.username %}" class="list-group-item list-group-item-action font-13 text-{% if request.path == profile  %}info{% else %}dark{% endif %}"> <i
+        <a href="{% url 'account:user_panel' user.username %}" class="list-group-item list-group-item-action font-13 text-{% if request.resolver_match.url_name == 'user_panel' %}info{% endif %}"> <i
                 class="fa fa-home align-middle me-2 font-13 text-secondary"></i>پیشخوان</a>
 
         <a href="profile-course.html" class="list-group-item list-group-item-action font-13 text-dark"><i
@@ -28,7 +29,7 @@
         <a href="profile-tickets.html" class="list-group-item list-group-item-action font-13 text-dark"><i
                 class="fas fa-tags align-middle me-2 font-12 text-secondary"></i>تیکت ها </a>
 
-        <a href="{% url 'account:user_panel_update' request.user.username %}" class="list-group-item list-group-item-action font-13 text-{% if request.path == profile_update  %}info{% else %}dark{% endif %}"><i
+        <a href="{% url 'account:user_panel_update' request.user.username %}" class="list-group-item list-group-item-action font-13 text-{% if request.resolver_match.url_name == 'user_panel_update' %}info{% endif %}"><i
                 class="fa fa-user-circle align-middle me-2 font-13  text-secondary"></i>جزئیات حساب
             کاربری</a>
 

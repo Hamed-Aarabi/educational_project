@@ -8,7 +8,7 @@
 
         <p>دوره های تخصصی ورود به بازار کار</p>
 
-        <a href="category.html" class="btn btn-warning font-13 p-3 mt-4">همین حالا شروع کنید <i
+        <a href="{% url 'course:all' %}" class="btn btn-warning font-13 p-3 mt-4">همین حالا شروع کنید <i
                 class="fa fa-angle-left align-middle ms-1"></i></a>
 
         <div class="col-md-6 icon-box mx-auto "><!-- start icon box -->
@@ -58,7 +58,7 @@
 
         </div>
 
-        <a href="category.html" class="title-btn align-self-start">همه دوره ها <i
+        <a href="{% url 'course:all' %}" class="title-btn align-self-start">همه دوره ها <i
                 class="fa fa-arrow-left align-middle"></i></a>
 
     </div><!-- end title-->
@@ -67,297 +67,51 @@
     <div class="container"><!-- start course box -->
 
         <div class="row">
+            {% for course in newest_courses %}
+                <div class="col-lg-4 col-sm-6 "><!-- start course item -->
 
-            <div class="col-lg-4 col-sm-6 "><!-- start course item -->
+                    <div class="card custom-card mb-3 shadow-sm">
 
-                <div class="card custom-card mb-3 shadow-sm">
+                        <div class="sub-layer">
 
-                    <div class="sub-layer">
+                            <img src="{{ course.image.url }}" class="img-fluid">
 
-                        <img src="{% static 'images/html.jpg' %}" class="img-fluid">
+                            <div class="over-layer">
 
-                        <div class="over-layer">
+                                <a href="{% url 'course:detail' course.slug %}" class="btn btn-info">مشاهده و خرید</a>
 
-                            <a href="course(demo-two).html" class="btn btn-info">مشاهده و خرید</a>
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <a href="{% url 'course:detail' course.slug %}" class="text-dark d-block mb-2">آموزش
+                                HTML</a>
+
+                            <p class="font-13 text-justify line-height vazir-font">{{ course.description }}</p>
+
+                        </div>
+
+                        <div class="card-footer">
+
+                            <img src="{{ course.tutor.image.url }}" class="team-icon">
+
+                            <span class="font-12 vazir-font">{{ course.tutor.full_name }}</span>
+
+                            <div class="float-end mt-1">
+
+                                <span class="text-success font-12">{{ course.price }}</span>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                    <div class="card-body">
+                </div><!-- end course item -->
+            {% endfor %}
 
-                        <a href="course(demo-two).html" class="text-dark d-block mb-2">آموزش HTML</a>
-
-                        <p class="font-13 text-justify line-height vazir-font">لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم
-                            از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-
-                    </div>
-
-                    <div class="card-footer">
-
-                        <img src="{% static 'images/team_2.jpg' %}" class="team-icon">
-
-                        <span class="font-12 vazir-font">علی نوروزی</span>
-
-                        <div class="float-end mt-1">
-
-                            <span class="text-success font-12">رایگان !</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end course item -->
-
-
-            <div class="col-lg-4 col-sm-6"><!-- start course item -->
-
-                <div class="card custom-card mb-3 shadow-sm">
-
-                    <div class="sub-layer">
-
-                        <img src="{% static 'images/flutter.png' %}" class="img-fluid">
-
-                        <div class="over-layer">
-
-                            <a href="course(demo-two).html" class="btn btn-info">مشاهده و خرید</a>
-
-                        </div>
-
-                    </div>
-
-                    <div class="card-body">
-
-                        <a href="course(demo-two).html" class="text-dark d-block mb-2"> آموزش حرفه ای Flutter</a>
-
-                        <p class="font-13 text-justify line-height vazir-font">لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم
-                            از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-
-                    </div>
-
-                    <div class="card-footer">
-
-                        <img src="{% static 'images/team_4.jpg' %}" class="team-icon">
-
-                        <span class="font-12 vazir-font">سارا رضایی</span>
-
-                        <div class="float-end mt-1">
-
-                            <del class="text-muted font-12 me-2">320.000 تومان</del>
-
-                            <span class="text-success font-12">200.000 تومان</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end course item -->
-
-
-            <div class="col-lg-4 col-sm-6"><!-- start course item -->
-
-                <div class="card custom-card mb-3 shadow-sm">
-
-                    <div class="sub-layer">
-
-                        <img src="{% static 'images/js.png' %}" class="img-fluid">
-
-                        <div class="over-layer">
-
-                            <a href="course(demo-two).html" class="btn btn-info">مشاهده و خرید</a>
-
-                        </div>
-
-                    </div>
-
-                    <div class="card-body">
-
-                        <a href="course(demo-two).html" class="text-dark d-block mb-2">آموزش پیشرفته جاوا اسکریپت</a>
-
-                        <p class="font-13 text-justify line-height vazir-font">لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم
-                            از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-
-                    </div>
-
-                    <div class="card-footer">
-
-                        <img src="{% static 'images/team_2.jpg' %}" class="team-icon">
-
-                        <span class="font-12 vazir-font">علی نوروزی</span>
-
-                        <div class="float-end mt-1">
-
-                            <span class="text-success font-12">400.000 تومان</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end course item -->
-
-
-            <div class="col-lg-4 col-sm-6"><!-- start course item -->
-
-                <div class="card custom-card mb-3 shadow-sm">
-
-                    <div class="sub-layer">
-
-                        <img src="{% static 'images/laravel.jpg' %}" class="img-fluid">
-
-                        <div class="over-layer">
-
-                            <a href="course(demo-two).html" class="btn btn-info">مشاهده و خرید</a>
-
-                        </div>
-
-                    </div>
-
-                    <div class="card-body">
-
-                        <a href="course(demo-two).html" class="text-dark d-block mb-2">ساخت فروشگاه با لاراول</a>
-
-                        <p class="font-13 text-justify line-height vazir-font">لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم
-                            از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-
-                    </div>
-
-                    <div class="card-footer">
-
-                        <img src="{% static 'images/team_3.jpg' %}" class="team-icon">
-
-                        <span class="font-12 vazir-font">مریم اکبری</span>
-
-                        <div class="float-end mt-1">
-
-                            <span class="text-success font-12">350.000 تومان</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end course item -->
-
-
-            <div class="col-lg-4 col-sm-6"><!-- start course item -->
-
-                <div class="card custom-card mb-3 shadow-sm">
-
-                    <div class="sub-layer">
-
-                        <img src="assets/{% static 'images/nodejs.png' %}" class="img-fluid">
-
-                        <div class="over-layer">
-
-                            <a href="course(demo-two).html" class="btn btn-info">مشاهده و خرید</a>
-
-                        </div>
-
-                    </div>
-
-                    <div class="card-body">
-
-                        <a href="course(demo-two).html" class="text-dark d-block mb-2">آموزش Nodejs</a>
-
-                        <p class="font-13 text-justify line-height vazir-font">لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم
-                            از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-
-                    </div>
-
-                    <div class="card-footer">
-
-                        <img src="{% static 'images/team_2.jpg' %}" class="team-icon">
-
-                        <span class="font-12 vazir-font">علی نوروزی</span>
-
-                        <div class="float-end mt-1">
-
-                            <del class="text-muted font-12 me-2">450.000 تومان</del>
-
-                            <span class="text-success font-12">380.000 تومان</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end course item -->
-
-
-            <div class="col-lg-4 col-sm-6"><!-- start course item -->
-
-                <div class="card custom-card mb-3 shadow-sm">
-
-                    <div class="sub-layer">
-
-                        <img src="{% static 'images/TypeScript.jpg' %}" class="img-fluid">
-
-                        <div class="over-layer">
-
-                            <a href="course(demo-two).html" class="btn btn-info">مشاهده و خرید</a>
-
-                        </div>
-
-                    </div>
-
-                    <div class="card-body">
-
-                        <a href="course(demo-two).html" class="text-dark d-block mb-2">آموزش TypeScript</a>
-
-                        <p class="font-13 text-justify line-height vazir-font">لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم
-                            از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-
-                    </div>
-
-                    <div class="card-footer">
-
-                        <img src="{% static 'images/team_4.jpg' %}" class="team-icon">
-
-                        <span class="font-12 vazir-font">سارا رضایی</span>
-
-                        <div class="float-end mt-1">
-
-                            <span class="text-success font-12">270.000 تومان</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end course item -->
 
         </div>
 

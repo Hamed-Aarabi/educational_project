@@ -4,3 +4,26 @@
 <script src="{% static 'js/owl.carousel.min.js' %}"></script>
 <script src="{% static 'js/countfect.min.js' %}"></script>
 <script src="{% static 'js/script.js' %}"></script>
+
+<script>
+    function comment_reply(id, name) {
+        document.getElementById('reply_id').value = id;
+        $('#text').attr('placeholder', 'پاسخ به ' + name);
+    }
+
+    function like_comment(slug, pk) {
+        $.get(`courses/${slug}/like_comment/${pk}`).then(response => {
+            location.reload()
+        })
+    }
+     function dislike_comment(slug, pk) {
+        $.get(`courses/${slug}/dislike_comment/${pk}`).then(response => {
+            location.reload()
+        })
+    }
+       function heart_comment(slug, pk) {
+        $.get(`courses/${slug}/heart_comment/${pk}`).then(response => {
+            location.reload()
+        })
+    }
+</script>
