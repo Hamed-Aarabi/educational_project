@@ -20,10 +20,10 @@
         <a href="{% url 'account:user_panel' user.username %}" class="list-group-item list-group-item-action font-13 text-{% if request.resolver_match.url_name == 'user_panel' %}info{% endif %}"> <i
                 class="fa fa-home align-middle me-2 font-13 text-secondary"></i>پیشخوان</a>
 
-        <a href="profile-course.html" class="list-group-item list-group-item-action font-13 text-dark"><i
+        <a href="{% url 'account:user_panel_courses' request.user.username %}" class="list-group-item list-group-item-action font-13 text-{% if request.resolver_match.url_name == 'user_panel_courses' %}info{% endif %}"><i
                 class="fas fa-graduation-cap align-middle me-2 font-15  text-secondary"></i>دوره های شما</a>
 
-        <a href="profile-comments.html" class="list-group-item list-group-item-action font-13 text-dark"><i
+        <a href="{% url 'account:user_panel_comments' request.user.username %}" class="list-group-item list-group-item-action font-13 text-{% if request.resolver_match.url_name == 'user_panel_comments' %}info{% endif %}"><i
                 class="far fa-comment align-middle me-2 font-13  text-secondary"></i>نظرات </a>
 
         <a href="profile-tickets.html" class="list-group-item list-group-item-action font-13 text-dark"><i

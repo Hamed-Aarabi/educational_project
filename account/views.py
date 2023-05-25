@@ -3,10 +3,12 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
     PasswordResetCompleteView
 from django.urls import reverse_lazy
-from django.views.generic import FormView, TemplateView, View, UpdateView
+from django.views.generic import FormView, TemplateView, View, UpdateView, ListView
+
+from course.models import Course, Comment
 from .forms import UserCreationForm, LoginForm, MyPasswordResetForm, MyPasswordConfirmForm, UserChangeForm
 from .models import MyUser
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 
 
 class SignUpView(FormView):
@@ -66,10 +68,13 @@ class UserPanelView(View):
         if request.user.username != username:
             return redirect('account:user_panel', request.user.username)
         user = MyUser.objects.get(username=username)
-        return render(request, 'account/user_panel.html', {'user': user})
+        user_courses = user.student_courses.all().count()
+        courses = Course.objects.all().count()
+
+        return render(request, 'account/profile.html', {'user': user, 'courses':courses, 'user_courses':user_courses})
 
 class UserUpdatingView(UpdateView):
-    template_name = 'account/user_panel_update.html'
+    template_name = 'account/profile_update.html'
     form_class = UserChangeForm
 
     def get_success_url(self, **kwargs):
@@ -79,6 +84,32 @@ class UserUpdatingView(UpdateView):
         queryset = MyUser.objects.get(username=self.kwargs.get('username'))
         return queryset
 
+
+
+class UserCoursesView(ListView):
+    template_name = 'account/profile_course.html'
+    model = Course
+    context_object_name = 'courses'
+    paginate_by = 1
+    def get_queryset(self):
+        queryset = super(UserCoursesView, self).get_queryset()
+        queryset = Course.objects.all().filter(student=self.request.user.id)
+        return queryset
+
+class UserCommentsView(ListView):
+    template_name = 'account/profile_comments.html'
+    model = Comment
+    context_object_name = 'comments'
+    paginate_by = 1
+    def get_queryset(self):
+        queryset = super(UserCommentsView, self).get_queryset()
+        queryset = Comment.objects.all().filter(email=self.request.user.email)
+        return queryset
+
+def delete_comment(request,username, id):
+    comment = get_object_or_404(Comment, id=id)
+    comment.delete()
+    return redirect('account:user_panel_comments', username)
 
 def logout_view(request):
     logout(request)
