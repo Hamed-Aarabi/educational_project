@@ -1,0 +1,2 @@
+{% load custom_tags_article %}
+{% if request.GET %}{% for item in request.GET %}{% if item != 'page' %}&{{ item }}={{ request.GET|get_param:item }}{% endif %}{% endfor %}{% endif %}

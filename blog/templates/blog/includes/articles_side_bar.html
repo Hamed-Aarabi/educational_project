@@ -1,0 +1,64 @@
+{% load static %}
+<div class="col-md-3"><!-- start side bar -->
+    <form action="{% url 'blog:search' %}">
+        <div class="card bg-white shadow-sm p-2 mb-3"><!-- start box-1 -->
+
+            <p class="font-13 mt-3"><i class="fa fa-chevron-left align-middle font-12 text-info me-1"></i>جستجو
+                در نتایج</p>
+
+            <div class="search-in-result position-relative">
+
+                <input type="search" name="q" class="form-control" placeholder="دنبال چی میگردی ؟">
+
+            </div>
+
+        </div><!-- end box-1 -->
+    </form>
+
+    <form action="{% url 'blog:filter' %}">
+        <div class="card bg-white shadow-sm p-2 mb-3"><!-- start box-2 -->
+
+            <p class="font-13 mt-3"><i class="fa fa-chevron-left align-middle font-12 text-info me-1"></i>مرتب
+                سازی براساس</p>
+
+            <div class="form-check mb-2">
+
+                <input type="radio" name="time" value="newer" class="form-check-input" id="item-1">
+
+                <label class="form-check-label font-12" for="item-1"> جدیدترین </label>
+
+            </div>
+
+            <div class="form-check mb-2">
+
+                <input type="radio" name="time" value="older" class="form-check-input" id="item-2">
+
+                <label class="form-check-label font-12" for="item-2"> قدیمی ترین </label>
+
+            </div>
+
+        </div><!-- end box-2 -->
+
+        <div class="card bg-white shadow-sm p-2 mb-3"><!-- start box-3 -->
+
+            <p class="font-13 mt-3"><i class="fa fa-chevron-left align-middle font-12 text-info me-1"></i> دسته
+                بندی </p>
+            {% for tag in blog_tags %}
+                <div class="form-check mb-2">
+
+                    <input type="radio" name="tag" value="{{ tag }}" class="form-check-input" id="item-4">
+
+                    <label class="form-check-label font-12" for="item-4">{{ tag }}</label>
+
+                </div>
+
+            {% endfor %}
+
+        </div><!-- end box-3 -->
+
+        <div class="card bg-white shadow-sm p-2 mb-3">
+            <button type="submit" class="form-control">اعمال فیلتر</button>
+        </div>
+    </form>
+
+</div>

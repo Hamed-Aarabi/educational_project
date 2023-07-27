@@ -24,8 +24,11 @@
                                 <div class="border rounded mb-3">
 
                                     <div class="d-flex  justify-content-between">
-
-                                        <p class="font-13 m-2">{{ comment.course }}</p>
+                                        {% if comment.course %}
+                                            <p class="font-13 m-2">{{ comment.course }}</p>
+                                        {% else %}
+                                            <p class="font-13 m-2">{{ comment.article }}</p>
+                                        {% endif %}
 
                                         <p class="badge bg-success m-2"> تایید شده </p>
 
@@ -39,7 +42,8 @@
 
                                         <p class="font-12 m-2 text-muted">{{ comment.created_at.day }} {{ comment.created_at|date:'M' }} {{ comment.created_at.year }}</p>
 
-                                        <a href="{% url 'account:user_panel_del_comments' request.user.username comment.id %}"><i class="fa fa-trash text-muted m-2 font-13"></i></a>
+                                        <a href="{% url 'account:user_panel_del_comments' request.user.username comment.id %}"><i
+                                                class="fa fa-trash text-muted m-2 font-13"></i></a>
 
                                     </div>
 

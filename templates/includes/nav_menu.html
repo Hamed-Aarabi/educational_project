@@ -1,4 +1,5 @@
 {% load static %}
+{% load render_partial %}
 <nav class="d-none d-lg-block navigation shadow-sm"><!-- start nav menu -->
 
     <div class="container">
@@ -11,65 +12,7 @@
 
                 <ul class="mega-menu row ps-0"><!-- start mega menu -->
 
-                    <li class="col-4 mega-menu-box">
-
-                        <ul class="ps-0">
-
-                            <li class="menu-title"><a href="category.html"><i
-                                    class="fa fa-angle-left align-middle text-warning me-1"></i>دوره های آموزش برنامه
-                                نویسی</a></li>
-
-                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                        </ul>
-
-                    </li>
-
-                    <li class="col-4 mega-menu-box">
-
-                        <ul class="ps-0">
-
-                            <li class="menu-title"><a href="category.html"><i
-                                    class="fa fa-angle-left align-middle text-warning me-1"></i>دوره های آموزش برنامه
-                                نویسی</a></li>
-
-                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                        </ul>
-
-                    </li>
-
-                    <li class="col-4 mega-menu-box">
-
-                        <ul class="ps-0">
-
-                            <li class="menu-title"><a href="category.html"><i
-                                    class="fa fa-angle-left align-middle text-warning me-1"></i>دوره های آموزش برنامه
-                                نویسی</a></li>
-
-                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                            <li><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                        </ul>
-
-                    </li>
+                    {% render_partial 'course:partial_view' %}
 
                 </ul><!-- end mega menu -->
 
@@ -89,7 +32,7 @@
 
                         <li><a href="teach.html">درخواست تدریس</a></li>
 
-                        <li><a href="cart.html">سبد خرید </a></li>
+                        <li><a href="{% url 'cart:detail' %}">سبد خرید </a></li>
                     {% endif %}
 
                     <li><a href="404.html">صفحه 404</a></li>
@@ -98,9 +41,9 @@
 
             </li>
 
-            <li><a href="blog.html">بلاگ</a></li>
+            <li><a href="{% url 'blog:list' %}">بلاگ</a></li>
 
-            <li><a href="contactus.html">تماس با ما</a></li>
+            <li><a href="{% url 'contactus:create' %}">تماس با ما</a></li>
 
         </ul>
 

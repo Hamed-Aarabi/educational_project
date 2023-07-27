@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="container">
+
+        <div class="row">
+
+            {% include 'account/includes/right_sidebar_user_panel.html' %}<!-- end right sidebar -->
+
+            <div class="col-lg-9">
+
+                <div class="card my-3 p-3 shadow-sm">
+
+                    <p class="font-14">تیکت های شما :</p>
+
+                    <form method="post"><!-- start ticket form -->
+                        {% csrf_token %}
+                        <div class="mb-3">
+
+                            <label for="title" class="form-label font-13 ">عنوان :</label>
+
+                            <input type="text" class="form-control form-control-lg" id="title" name="title"
+                                   placeholder="عنوان دیدگاه">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label for="comment" class="font-13 mb-2">پیام :</label>
+
+                            <textarea class="form-control" rows="5" id="comment" name="desc"
+                                      placeholder="متن پیام شما"></textarea>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-lg btn-info btn-block font-13">ارسال تیکت</button>
+
+                    </form><!-- end ticket form -->
+
+                    <p class="font-14  my-5">لیست تیکت های شما :</p>
+                    {% if tickets %}
+                        {% for ticket in tickets %}
+                            <div class="alert">
+
+                                <p class="font-13 vazir-font mt-3">{{ forloop.counter }}) {{ ticket.description }}</p>
+
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-warning">
+
+                            <p class="font-13 vazir-font mt-3">تاکنون تیکتی برای شما ثبت نشده است !</p>
+
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

@@ -72,6 +72,7 @@ class UserChangeForm(forms.ModelForm):
     )
 
     sex = forms.ChoiceField(choices=SEX_CHOICES)
+
     class Meta:
         model = MyUser
         fields = ('email', 'username', 'first_name', 'last_name', 'image', 'phone', 'sex')
@@ -86,9 +87,16 @@ class UserChangeForm(forms.ModelForm):
                 attrs={'class': 'form-control form-control-lg', 'id': 'lastname', 'type': 'text'}),
             'image': forms.FileInput(attrs={'class': 'form-control form-control-lg', 'id': 'avatar', 'type': 'file'}),
             'phone': forms.TextInput(attrs={'class': 'form-control form-control-lg', 'id': 'phone', 'type': 'tel'}),
-             # 'sex': forms.TextInput(attrs={'class': 'form-control form-control-lg', 'id': 'sex'}),
+            # 'sex': forms.TextInput(attrs={'class': 'form-control form-control-lg', 'id': 'sex'}),
 
         }
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        current_username = self.instance.username
+        if MyUser.objects.exclude(username=current_username).filter(username=username).exists():
+            raise ValidationError('نام کاربری قبلا انتخاب شده است', code='username_exist_update')
+        return username
 
 
 class LoginForm(forms.Form):

@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container d-flex justify-content-between mt-5 mb-4"><!-- start title-->
+
+        <div class="title">
+
+            <p class="font-14 ps-2">سبد خرید </p>
+
+            <p class="font-12 ps-3 text-muted">تا آخر راه کنارتون هستیم !</p>
+
+        </div>
+
+    </div><!-- end title-->
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-9"><!-- start cart table -->
+
+                <div class="table-responsive mb-3">
+
+                    <table id="cart-table" class="table border">
+
+                        <thead class="bg-light">
+
+                        <tr>
+
+                            <td>عکس</td>
+
+                            <td>نام دوره</td>
+
+                            <td>تعداد</td>
+
+                            <td>قیمت دوره</td>
+
+                            <td>قیمت کل</td>
+
+                            <td>&nbsp</td>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+                        {% for item in cart %}
+
+                            <tr>
+
+                                <td>
+
+                                    <div class="product-img">
+
+                                        <img src="{{ item.image }}">
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+
+                                    <p class="mt-2">{{ item.name }}</p>
+
+                                </td>
+
+                                <td>
+                                    <div class=" d-flex justify-content-center align-items-center">
+
+                                        <input type="text" name="qty" min="0" class="qty form-control text-center"
+                                               value="{{ item.quantity }}">
+
+                                    </div>
+
+                                </td>
+
+                                <td>
+
+                                    <input type="text" value="{{ item.price }} تومان"
+                                           class="form-control font-13 text-center"
+                                           disabled>
+
+                                </td>
+
+                                <td><span class="me-1 pt-2 d-inline-block">{{ item.total_price }}</span>تومان</td>
+
+                                <td class="bg-light border-start">
+
+                                    <a href="{% url 'cart:remove-item' item.unique %}"><i class="fa fa-times pt-2 text-muted"></i></a>
+
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div><!-- end cart table -->
+
+            <div class="col-lg-3"><!-- start payment box -->
+
+                <div class="card shadow-sm mb-3">
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between">
+
+                            <p class="font-13"> مبلغ کل ({{cart.cart_len}} کالا) :</p>
+
+                            <p class="font-13">{{ cart.total }} تومان</p>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between border-bottom">
+
+                            <p class="font-13">هزینه ارسال :</p>
+
+                            <p class="font-13">وابسته به آدرس</p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer bg-white text-center border-top-0">
+
+                        <p class="font-13">مبلغ قابل پرداخت:</p>
+
+                        <p class="font-14">{{ cart.total }} تومان</p>
+
+                        <a href="{% url 'cart:order-create' %}" class="btn btn-lg btn-block btn-info font-13 mb-3">ثبت سفارش </a>
+
+                    </div>
+
+                </div>
+
+            </div><!-- end payment box -->
+
+        </div>
+
+    </div>
+{% endblock %}

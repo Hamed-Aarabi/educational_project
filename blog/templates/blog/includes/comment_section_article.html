@@ -1,0 +1,170 @@
+{% load static %}
+<div class="container pt-5"><!-- start send comment -->
+    <p class="font-14">دیدگاه کاربران</p>
+    <form method="post">
+        {% csrf_token %}
+
+        {% if not request.user.is_authenticated %}
+            <div class="row"><!-- start comment form -->
+
+                <div class="col">
+
+                    <input type="text" name="name" class="form-control form-control-lg"
+                           placeholder="نام و نام خانوادگی">
+
+                </div>
+
+
+                <div class="col">
+
+                    <input name="email" type="text" class="form-control form-control-lg"
+                           placeholder="ایمیل">
+
+                </div>
+
+
+            </div>
+        {% endif %}
+
+        <div class="row mt-3">
+
+            <div class="col-12">
+
+                                <textarea name="text" id="text" class="form-control" rows="5"
+                                          placeholder="متن دیدگاه شما"></textarea>
+
+                <button type="submit" href="" class="btn btn-lg btn-info float-end font-13 my-3">ثبت
+                    دیدگاه
+                </button>
+
+            </div>
+            <div class="col">
+
+                <input type="hidden" name="reply_id" class="form-control form-control-lg"
+                       id="reply_id" value="">
+
+            </div>
+
+        </div><!-- end comment form -->
+    </form>
+
+</div><!-- end send comment -->
+
+<div class="container"><!-- start comment box -->
+
+    <div class="row">
+        {% for comment in page_obj %}
+            {% if not comment.parent %}
+                <div class="col-12 bg-light shadow-sm mb-3 p-2 pb-3"><!-- start comment item -->
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div class="d-flex">
+
+                            <div>
+                                {% if comment.image %}
+                                    <img src="{{ comment.image.url }}" class="comment-pic">
+                                {% else %}
+                                    <img src="{% static 'images/avatar.png' %}" class="comment-pic">
+                                {% endif %}
+
+                            </div>
+
+                            <div>
+
+                                <span class="font-13 d-block ms-3 mt-3">{{ comment.user }}</span>
+
+                                <div class="d-flex ms-3 mt-3">
+
+                                    <i class="fa fa-star me-1 font-13 text-warning"></i>
+
+                                    <i class="fa fa-star me-1 font-13 text-warning"></i>
+
+                                    <i class="fa fa-star me-1 font-13 text-warning"></i>
+
+                                    <i class="fa fa-star me-1 font-13 text-warning"></i>
+
+                                    <i class="fa fa-star me-1 font-13 text-warning"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <span class="font-12 text-muted"> <i
+                                class="fa fa-calendar font-14 me-2"></i> {{ comment.created_at.day }} {{ comment.created_at|date:'M' }} {{ comment.created_at.year }} </span>
+
+                    </div>
+
+                    <p class="font-13 vazir-font line-height px-5 mt-3">{{ comment.text }}</p>
+
+                    <div class="d-fex px-5">
+
+                        <span class="font-12 me-4"><a
+                                onclick="heart_comment('{{ app_name }}','{{ article.slug }}', '{{ comment.id }}')"><i
+                                class="far fa-heart text-danger font-15 me-1"></i>({{ comment.total_heart }})</a> </span>
+
+                        <span class="font-12 me-4"><a
+                                onclick="like_comment('{{ app_name }}','{{ article.slug }}', '{{ comment.id }}')"><i
+                                class="far fa-thumbs-up text-success font-15 me-1"></i>({{ comment.total_likes }})</a></span>
+
+                        <span class="font-12 me-4"><a
+                                onclick="dislike_comment('{{ app_name }}','{{ article.slug }}', '{{ comment.id }}')"><i
+                                class="far fa-thumbs-down text-muted font-15 me-1"></i>({{ comment.total_dislikes }})</a></span>
+                        <span class="font-12 me-4"><a
+                                onclick="comment_reply('{{ comment.id }}','{{ comment.user }}')"><i
+                                class="fa fa-reply"
+                                aria-hidden="true"></i></a></span>
+
+                    </div>
+
+                    {% if comment.comment_parent %}
+                        {% for reply in comment.comment_parent.all %}
+
+                            <div class="bg-white shadow-sm mx-5 mt-3 p-3 rounded"><!-- start reply box -->
+
+                                <div class="d-flex justify-content-between align-items-center">
+
+                                    <p class="font-13 text-danger">{{ reply.user }}</p>
+
+                                    <span class="font-12 text-muted"> <i
+                                            class="fa fa-calendar font-14 me-2"></i> {{ reply.created_at.day }} {{ reply.created_at|date:'M' }} {{ reply.created_at.year }}</span>
+
+                                </div>
+
+                                <p class="font-13 vazir-font line-height">{{ reply.text }}</p>
+
+                            </div><!-- end reply box -->
+                        {% endfor %}
+                    {% endif %}
+
+                </div>
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+</div><!-- end comment box -->
+{% if page_obj.has_other_pages %}
+    <ul class="pagination justify-content-center my-4 font-13"><!-- start pagination -->
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}"
+                                     class="page-link">&lsaquo;</a>
+            </li>
+        {% endif %}
+        {% for i in page_obj.paginator.page_range %}
+            {% if i == page_obj.number %}
+                <li class="page-item active"><a href="?page={{ i }}&?time={{ request.GET.time }}" class="page-link">{{ i }}</a>
+                </li>
+            {% else %}
+                <li class="page-item"><a href="?page={{ i }}&?time={{ request.GET.time }}" class="page-link">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <li class="page-item"><a href="?page={{ page_obj.next_page_number }}"
+                                     class="page-link">&rsaquo;</a></li>
+        {% endif %}
+
+    </ul><!-- end pagination -->
+{% endif %}

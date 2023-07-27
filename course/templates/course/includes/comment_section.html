@@ -22,25 +22,27 @@
                     <form method="post">
                         {% csrf_token %}
 
-                        <div class="row"><!-- start comment form -->
+                        {% if not request.user.is_authenticated %}
+                            <div class="row"><!-- start comment form -->
 
-                            <div class="col">
+                                <div class="col">
 
-                                <input type="text" name="name" class="form-control form-control-lg"
-                                       placeholder="نام و نام خانوادگی">
+                                    <input type="text" name="name" class="form-control form-control-lg"
+                                           placeholder="نام و نام خانوادگی">
+
+                                </div>
+
+
+                                <div class="col">
+
+                                    <input name="email" type="text" class="form-control form-control-lg"
+                                           placeholder="ایمیل">
+
+                                </div>
+
 
                             </div>
-
-
-                            <div class="col">
-
-                                <input name="email" type="text" class="form-control form-control-lg"
-                                       placeholder="ایمیل">
-
-                            </div>
-
-
-                        </div>
+                        {% endif %}
 
                         <div class="row mt-3">
 
@@ -67,7 +69,7 @@
                     <div class="row"><!-- start comment box -->
 
                         {% for comment in page_obj %}
-                            {% if not comment.reply_to %}
+                            {% if not comment_parent %}
                                 <div class="col-12 bg-light shadow-sm mb-3 p-2 pb-3"><!-- start comment item -->
 
                                     <div class="d-flex justify-content-between align-items-center">
@@ -75,14 +77,18 @@
                                         <div class="d-flex">
 
                                             <div>
-                                                <img src="{% static 'images/avatar.png' %}" class="comment-pic">
+                                                {% if request.user.is_authenticated and comment.user.image %}
+                                                    <img src="{{ comment.user.image.url }}" class="comment-pic">
+                                                {% else %}
+                                                    <img src="{% static 'images/avatar.png' %}" class="comment-pic">
+                                                {% endif %}
 
 
                                             </div>
 
                                             <div>
 
-                                                <span class="font-13 d-block ms-3 mt-3">{{ comment.user }}</span>
+                                                <span class="font-13 d-block ms-3 mt-3">{{ comment.user.username }}</span>
 
 
                                                 <div class="d-flex ms-3 mt-3">
@@ -112,19 +118,26 @@
 
                                     <div class="d-fex px-5">
 
-                                <span class="font-12 me-4"><a onclick="heart_comment('{{ course.slug }}', '{{ comment.id }}')"><i class="far fa-heart text-danger font-15 me-1"></i>({{ comment.total_heart }})</a> </span>
+                                        <span class="font-12 me-4"><a
+                                                onclick="heart_comment('{{ app_name }}','{{ course.slug }}', '{{ comment.id }}')"><i
+                                                class="far fa-heart text-danger font-15 me-1"></i>({{ comment.total_heart }})</a> </span>
 
-                                        <span class="font-12 me-4"><a onclick="like_comment('{{ course.slug }}', '{{ comment.id }}')"><i class="far fa-thumbs-up text-success font-15 me-1"></i>({{ comment.total_likes }})</a></span>
+                                        <span class="font-12 me-4"><a
+                                                id="like"
+                                                onclick="like_comment('{{ app_name }}','{{ course.slug }}', '{{ comment.id }}')"><i
+                                                class="far fa-thumbs-up text-success font-15 me-1"></i>({{ comment.total_likes }})</a></span>
 
-                                        <span class="font-12 me-4"><a onclick="dislike_comment('{{ course.slug }}', '{{ comment.id }}')" ><i class="far fa-thumbs-down text-muted font-15 me-1"></i>({{ comment.total_dislikes }})</a></span>
+                                        <span class="font-12 me-4"><a
+                                                onclick="dislike_comment('{{ app_name }}','{{ course.slug }}', '{{ comment.id }}')"><i
+                                                class="far fa-thumbs-down text-muted font-15 me-1"></i>({{ comment.total_dislikes }})</a></span>
                                         <span class="font-12 me-4"><a
                                                 onclick="comment_reply('{{ comment.id }}','{{ comment.user }}')"><i
                                                 class="fa fa-reply"
                                                 aria-hidden="true"></i></a></span>
 
                                     </div>
-                                    {% if comment.comment_replys %}
-                                        {% for reply in comment.comment_replys.all %}
+                                    {% if comment.comment_parent %}
+                                        {% for reply in comment.comment_parent.all %}
                                             <div class="bg-white shadow-sm mx-5 mt-3 p-3 rounded">
                                                 <!-- start reply box -->
 
@@ -182,9 +195,14 @@
                         <div class="col-12">
 
                             <div class="row">
+                                {% if course.tutor.image %}
+                                    <div class="col-lg-3 col-md-4"><img src="{{ course.tutor.image.url }}"
+                                                                        class="img-fluid rounded my-3 mx-auto d-block">
+                                {% else %}
+                                    <div class="col-lg-3 col-md-4"><img src="{% static 'images/avatar.png' %}"
+                                                                        class="img-fluid rounded my-3 mx-auto d-block">
+                                {% endif %}
 
-                                <div class="col-lg-3 col-md-4"><img src="{{ course.tutor.image.url }}"
-                                                                    class="img-fluid rounded my-3 mx-auto d-block">
                                 </div>
 
                                 <div class="col-lg-9 col-md-8">
@@ -227,18 +245,19 @@
 
                                 </div>
 
+                                </div>
+
                             </div>
 
                         </div>
 
-                    </div>
+                    </div><!-- end description tab -->
 
-                </div><!-- end description tab -->
+                </div><!-- end tab contents -->
 
-            </div><!-- end tab contents -->
+            </div>
 
         </div>
 
-    </div>
-
-</div><!-- end nav box -->
+    </div><!-- end nav box -->
+</div>

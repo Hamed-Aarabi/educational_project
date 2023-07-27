@@ -4,11 +4,12 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, 
     PasswordResetCompleteView
 from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView, View, UpdateView, ListView
-
-from course.models import Course, Comment
+from blog.models import *
+from course.models import *
 from .forms import UserCreationForm, LoginForm, MyPasswordResetForm, MyPasswordConfirmForm, UserChangeForm
-from .models import MyUser
+from .models import MyUser, Ticket
 from django.shortcuts import redirect, render, get_object_or_404
+from django.db.models import Q
 
 
 class SignUpView(FormView):
@@ -71,19 +72,19 @@ class UserPanelView(View):
         user_courses = user.student_courses.all().count()
         courses = Course.objects.all().count()
 
-        return render(request, 'account/profile.html', {'user': user, 'courses':courses, 'user_courses':user_courses})
+        return render(request, 'account/profile.html', {'user': user, 'courses': courses, 'user_courses': user_courses})
 
-class UserUpdatingView(UpdateView):
-    template_name = 'account/profile_update.html'
-    form_class = UserChangeForm
 
-    def get_success_url(self, **kwargs):
-        return reverse_lazy('account:user_panel', kwargs={'username':self.kwargs.get('username')})
-
-    def get_object(self, queryset=None):
-        queryset = MyUser.objects.get(username=self.kwargs.get('username'))
-        return queryset
-
+def user_update_view(request, username):
+    user = MyUser.objects.get(username=username)
+    if request.method == 'POST':
+        form = UserChangeForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('account:user_panel', username)
+    else:
+        form = UserChangeForm(instance=user)
+    return render(request, 'account/profile_update.html', {'form': form})
 
 
 class UserCoursesView(ListView):
@@ -91,25 +92,45 @@ class UserCoursesView(ListView):
     model = Course
     context_object_name = 'courses'
     paginate_by = 1
+
     def get_queryset(self):
         queryset = super(UserCoursesView, self).get_queryset()
         queryset = Course.objects.all().filter(student=self.request.user.id)
         return queryset
 
+
 class UserCommentsView(ListView):
     template_name = 'account/profile_comments.html'
-    model = Comment
-    context_object_name = 'comments'
     paginate_by = 1
+    model = CommentBaseClass
+    context_object_name = 'comments'
+
     def get_queryset(self):
-        queryset = super(UserCommentsView, self).get_queryset()
-        queryset = Comment.objects.all().filter(email=self.request.user.email)
+        get_article_comments = ArticleComment.objects.filter(email=self.request.user.email).order_by('-created_at', )
+        get_course_comments = CourseComment.objects.filter(email=self.request.user.email).order_by('-created_at', )
+        queryset = list(get_article_comments) + list(get_course_comments)
+
+        # queryset = CommentBaseClass.objects.filter(email=self.request.user.email).order_by('-created_at', )
         return queryset
 
-def delete_comment(request,username, id):
-    comment = get_object_or_404(Comment, id=id)
+
+def delete_comment(request, username, id):
+    comment = get_object_or_404(CommentBaseClass, id=id)
     comment.delete()
     return redirect('account:user_panel_comments', username)
+
+
+class TicketView(View):
+    def get(self, request, username):
+        user = MyUser.objects.get(username=username)
+        tickets = user.user_tickets.all()
+        return render(request, 'account/profile_ticket.html', {'tickets': tickets})
+
+    def post(self, request, username):
+        title, desc = request.POST.get('title'), request.POST.get('desc')
+        Ticket.objects.create(user=request.user, title=title, description=desc)
+        return redirect('account:user_panel_ticket', username)
+
 
 def logout_view(request):
     logout(request)

@@ -2,7 +2,28 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserCreationForm, UserChangeForm
-from .models import MyUser
+from .models import MyUser, Ticket
+
+
+
+class TicketFilterByStatus(admin.SimpleListFilter):
+    parameter_name = 'status'
+    title = 'پاسخ'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('True', 'حل شده'),
+            ('False', 'حل نشده')
+        )
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(status=self.value())
+
+@admin.register(Ticket)
+class TicketAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'title', 'status', 'created_at')
+    list_filter = (TicketFilterByStatus,)
 
 
 

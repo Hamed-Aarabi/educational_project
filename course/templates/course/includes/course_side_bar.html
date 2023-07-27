@@ -9,7 +9,7 @@
 
             <div class="form-check mb-2">
 
-                <input type="checkbox" class="form-check-input" value="True" name="price" id="item-1">
+                <input type="radio" class="form-check-input" value="True" name="price" id="item-1">
 
                 <label class="form-check-label font-12" for="item-1">رایگان</label>
 
@@ -18,13 +18,11 @@
 
             <div class="form-check mb-2">
 
-                <input type="checkbox" class="form-check-input" value="False" name="price" id="item-2">
+                <input type="radio" class="form-check-input" value="False" name="price" id="item-2">
 
                 <label class="form-check-label font-12" for="item-2">نقدی</label>
 
             </div>
-
-
 
 
         </div><!-- end box-1 -->
@@ -70,46 +68,19 @@
 
         <div class="card bg-white shadow-sm p-2 mb-3"><!-- start box-3 -->
 
+
             <p class="font-13 mt-3"><i class="fa fa-chevron-left align-middle font-12 text-info me-1"></i>سرفصل
                 ها </p>
+            {% for tag in tags %}
+                <div class="form-check mb-2">
 
-            <div class="form-check mb-2">
+                    <input type="radio" class="form-check-input" value="{{ tag }}" name="tag" id="item-8">
 
-                <input type="checkbox" class="form-check-input" value="برنامه نویسی" name="tag" id="item-8">
+                    <label class="form-check-label font-12" for="item-8">{{ tag }}</label>
 
-                <label class="form-check-label font-12" for="item-8">Programming</label>
+                </div>
+            {% endfor %}
 
-            </div>
-
-            <div class="form-check mb-2">
-
-                <input type="checkbox" class="form-check-input" value="فلاتر" name="tag" id="item-9">
-
-                <label class="form-check-label font-12" for="item-9">Flutter</label>
-
-            </div>
-
-            <div class="form-check mb-2">
-
-                <input type="checkbox" class="form-check-input" value="تایپ اسکریپت" name="tag" id="item-10">
-
-                <label class="form-check-label font-12" for="item-10"> TypeScript</label>
-
-            </div>
-             <div class="form-check mb-2">
-
-                <input type="checkbox" class="form-check-input" value="پایتون" name="tag" id="item-10">
-
-                <label class="form-check-label font-12" for="item-10"> python</label>
-
-            </div>
-             <div class="form-check mb-2">
-
-                <input type="checkbox" class="form-check-input" value="جنگو" name="tag" id="item-10">
-
-                <label class="form-check-label font-12" for="item-10"> Django</label>
-
-            </div>
 
         </div><!-- end box-3 -->
         <div class="card bg-white shadow-sm p-2 mb-3">

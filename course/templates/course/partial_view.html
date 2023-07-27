@@ -1,0 +1,23 @@
+{% for category in categories %}
+    {% if not category.parent %}
+        {% if category.child_category.all %}
+            <li class="col-4 mega-menu-box">
+                <ul class="ps-0">
+                    <li class="menu-title"><a href="{% url 'course:category_list' category.name %}"><i
+                            class="fa fa-angle-left align-middle text-warning me-1"></i>{{ category.name }}</a></li>
+                    {% for category in category.child_category.all %}
+                        <li><a href="{% url 'course:category_list' category.name %}">{{ category.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% else %}
+            <li class="col-4 mega-menu-box">
+                <ul class="ps-0">
+
+                    <li class="menu-title"><a href="{% url 'course:category_list' category.name %}"><i
+                            class="fa fa-angle-left align-middle text-warning me-1"></i>{{ category.name }}</a></li>
+                </ul>
+            </li>
+        {% endif %}
+    {% endif %}
+{% endfor %}

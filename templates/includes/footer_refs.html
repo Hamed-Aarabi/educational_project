@@ -9,20 +9,21 @@
     function comment_reply(id, name) {
         document.getElementById('reply_id').value = id;
         $('#text').attr('placeholder', 'پاسخ به ' + name);
+        window.location.href = '#text'
     }
 
-    function like_comment(slug, pk) {
-        $.get(`courses/${slug}/like_comment/${pk}`).then(response => {
+    function like_comment(url,slug, pk) {
+        $.get(`${url}/${slug}/like_comment/${pk}`).then(response => {
             location.reload()
         })
     }
-     function dislike_comment(slug, pk) {
-        $.get(`courses/${slug}/dislike_comment/${pk}`).then(response => {
+     function dislike_comment(url,slug, pk) {
+        $.get(`${url}/${slug}/dislike_comment/${pk}`).then(response => {
             location.reload()
         })
     }
-       function heart_comment(slug, pk) {
-        $.get(`courses/${slug}/heart_comment/${pk}`).then(response => {
+       function heart_comment(url,slug, pk) {
+        $.get(`${url}/${slug}/heart_comment/${pk}`).then(response => {
             location.reload()
         })
     }

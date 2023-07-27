@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container my-3"><!-- start breadcrumb -->
+
+        <ul class="breadcrumb shadow-sm bg-light p-2">
+
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="font-12 vazir-font text-secondary">صفحه
+                اصلی</a></li>
+
+            <li class="breadcrumb-item"><a href="{% url 'blog:list' %}" class="ps-2 font-12 vazir-font  text-secondary">بلاگ</a>
+            </li>
+
+        </ul>
+
+    </div><!-- end breadcrumb -->
+
+    <div class="container">
+
+        <div class="row">
+
+            {% include 'blog/includes/articles_side_bar.html' %}<!-- end side bar -->
+
+            <div class="col-md-9"><!-- start article boxes -->
+                {% for article in articles %}
+                    <div class="row mx-0 border py-2 rounded shadow-sm mb-3"><!-- start article item -->
+
+                        <div class="col-lg-5">
+
+                            <img src="{{ article.image.url }}" class="blog-pic">
+
+                        </div>
+
+                        <div class="col-lg-7">
+
+                            <a href="{% url 'blog:detail' article.slug %}"
+                               class="font-14 text-dark d-block my-3">{{ article.title }} </a>
+
+                            <p class="font-13 vazir-font text-justify line-height">{{ article.text }}</p>
+
+                            <span class="font-12 me-2"><i
+                                    class="fa fa-pen text-secondary align-middlle"></i> {{ article.article_author }}</span>
+
+                            <span class="font-12 me-2"><i
+                                    class="fa fa-calendar text-secondary align-middlle me-1"></i>{{ article.created_at.year }}/{{ article.created_at.month }}/{{ article.created_at.day }} </span>
+
+                            <span class="font-12">دسته بندی : {{ article.category }}</span>
+
+                            <a href="{% url 'blog:detail' article.slug %}" class="btn btn-info font-12 float-end">ادامه
+                                مطلب</a>
+
+                        </div>
+
+                    </div><!-- end article item -->
+                {% endfor %}
+
+                {% if is_paginated %}
+                    <ul class="pagination justify-content-center my-4 font-13"><!-- start pagination -->
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% include 'blog/includes/pagination_href_article.html' %}"
+                                class="page-link">&lsaquo;</a>
+                            </li>
+                        {% endif %}
+                        {% for i in page_obj.paginator.page_range %}
+                            {% if i == page_obj.number %}
+                                <li class="page-item active"><a
+                                        href="?page={{ i }}{% include 'blog/includes/pagination_href_article.html' %}"
+                                        class="page-link">{{ i }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a
+                                        href="?page={{ i }}{% include 'blog/includes/pagination_href_article.html' %}"
+                                        class="page-link">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a href="?page={{ page_obj.next_page_number }}{% include 'blog/includes/pagination_href_article.html' %}"
+                                class="page-link">&rsaquo;</a>
+                            </li>
+                        {% endif %}
+
+                    </ul><!-- end pagination -->
+                {% endif %}
+
+            </div><!-- end article boxes -->
+
+        </div>
+
+    </div>
+{% endblock %}

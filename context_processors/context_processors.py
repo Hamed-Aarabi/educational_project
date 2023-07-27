@@ -1,12 +1,18 @@
-from django.urls import resolve, reverse, reverse_lazy
+from course.models import Tag
+from blog.models import BlogTag
+from cart.cart_module import Cart
 
-#
-#
-# def user_panel_urls(request):
-#
-#     profile_url = reverse('account:user_panel', args=[request.user.username])
-#     profile_update_url = reverse('account:user_panel_update', args=[request.user.username])
-#     # profile_url = reverse('account:user_panel', args=[request.user.username])
-#     # profile_url = reverse('account:user_panel', args=[request.user.username])
-#     # profile_url = reverse('account:user_panel', args=[request.user.username])
-#     return {'profile':profile_url, 'profile_update':profile_update_url}
+
+def get_tags_course(request):
+    tags = Tag.objects.all()
+    return {'tags': tags}
+
+
+def get_tags_blog(request):
+    blog_tags = BlogTag.objects.all()
+    return {'blog_tags': blog_tags}
+
+
+def cart_item(request):
+    cart = Cart(request)
+    return {'cart': cart}

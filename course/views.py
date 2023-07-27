@@ -1,37 +1,32 @@
-from django.core.paginator import Paginator
-from django.http import JsonResponse
-from django.shortcuts import render, HttpResponseRedirect, reverse, redirect
-from django.views.generic import DetailView, TemplateView, ListView, View
-from .models import Course, Comment
-from datetime import datetime, timedelta
-
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, View, TemplateView
+from common_views.views import *
+from django.db.models import Count
+from .models import *
+from .filters import course_filters
 
 
 class CourseDetailView(View):
-    # template_name = 'course/course_detail.html'
-    # model = Course
-    # context_object_name = 'course'
-
     def get(self, request, slug):
+        app_name = get_app_name(request)
         course = Course.objects.get(slug__regex=slug)
         allow = False
         if course.student.filter(id=self.request.user.id).exists():
             allow = True
-        comments = course.course_comments.filter(reply_to=None)
-        paginator = Paginator(comments, 2)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        return render(request, 'course/course_detail.html', {'course':course, 'allow':allow,'page_obj':page_obj})
+        comments = course.comment_of_courses.filter(parent=None)
+        page_obj = comment_paginator(request, comments)
+        return render(request, 'course/course_detail.html',
+                      {'course': course, 'allow': allow, 'page_obj': page_obj, 'app_name': app_name})
 
     def post(self, request, slug):
-
-        reply = request.POST.get('reply_id')
-        name, email, text = request.POST.get('name'),request.POST.get('email'),request.POST.get('text')
-        Comment.objects.create(user=name,reply_to_id=reply, text=text, email=email, course=Course.objects.get(slug__regex=slug))
-
-        return HttpResponseRedirect(reverse('course:detail', args=[slug]))
+        name, email, parent, text = create_comment(request)
+        CourseComment.objects.create(user=name, parent_id=parent, text=text, email=email,
+                                     course=Course.objects.get(slug__regex=slug))
+        return redirect('course:detail', slug)
 
 
+# This method show all item of Course model \\
 class CourseListView(ListView):
     template_name = 'course/course_list.html'
     model = Course
@@ -56,62 +51,56 @@ class SearchBoxView(ListView):
 class CoursesFilter(ListView):
     template_name = 'course/course_list.html'
     model = Course
-    paginate_by = 10
+    paginate_by = 1
     context_object_name = 'courses'
-
-
 
     def get_queryset(self):
         queryset = super(CoursesFilter, self).get_queryset()
-
-        price, title = self.request.GET.get('price', None), self.request.GET.get('tag', None)
+        price, tag = self.request.GET.get('price', None), self.request.GET.get('tag', None)
         time, is_finished = self.request.GET.get('time', None), self.request.GET.get('status', None)
-
-        if price:
-            return queryset.filter(is_free__exact=price)
-        if title:
-            return queryset.filter(title__icontains=title)
-        if is_finished:
-            return queryset.filter(is_finished__exact=is_finished)
-        if time:
-            if time == 'new':
-                return queryset.filter(created_at__gte=datetime.now() - timedelta(days=2))
-            elif time == 'old':
-                return queryset.filter(created_at__lte=datetime.now() - timedelta(days=2))
+        queryset = course_filters(price, tag, is_finished, time)
         return queryset
 
 
-def comment_like(request,slug, pk):
-
-    comment = Comment.objects.get(id=pk)
-    if comment.likes.filter(id=request.user.id).exists():
-        comment.likes.remove(request.user.id)
-        return JsonResponse({'response':'remove_like'})
-    else:
-        comment.likes.add(request.user.id)
-        if comment.dislikes.filter(id=request.user.id).exists():
-            comment.dislikes.remove(request.user.id)
-        return JsonResponse({'response': 'like'})
+# Source code of functions like, dislike and heart is in views.py in common_views app
 
 
-def comment_dislike(request,slug, pk):
+def comments_like(request, slug, pk):
+    comment = CourseComment.objects.get(id=pk)
+    comment_like(request, comment)
+    return HttpResponse()
 
-    comment = Comment.objects.get(id=pk)
-    if comment.dislikes.filter(id=request.user.id).exists():
-        comment.dislikes.remove(request.user.id)
-        return JsonResponse({'response':'remove_dislike'})
-    else:
-        comment.dislikes.add(request.user.id)
-        if comment.likes.filter(id=request.user.id).exists():
-            comment.likes.remove(request.user.id)
-        return JsonResponse({'response': 'dislike'})
 
-def comment_heart(request,slug, pk):
+def comments_dislike(request, slug, pk):
+    comment = CourseComment.objects.get(id=pk)
+    comment_dislike(request, comment)
+    return HttpResponse()
 
-    comment = Comment.objects.get(id=pk)
-    if comment.heart.filter(id=request.user.id).exists():
-        comment.heart.remove(request.user.id)
-        return JsonResponse({'response':'remove_heart'})
-    else:
-        comment.heart.add(request.user.id)
-        return JsonResponse({'response': 'heart'})
+
+def comments_heart(request, slug, pk):
+    comment = CourseComment.objects.get(id=pk)
+    comment_heart(request, comment)
+    return HttpResponse()
+
+
+class CategoryPartialView(TemplateView):
+    template_name = 'course/partial_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryPartialView, self).get_context_data(**kwargs)
+        categories = Category.objects.annotate(
+            num_child_category=Count('child_category')).order_by('-num_child_category', )
+        context['categories'] = categories
+        return context
+
+
+class CategoryListView(ListView):
+    template_name = 'course/course_list.html'
+    model = Category
+    context_object_name = 'courses'
+    paginate_by = 1
+
+    def get_queryset(self):
+        queryset = super(CategoryListView, self).get_queryset()
+        queryset = Course.objects.filter(category__name__icontains=self.kwargs.get('name'))
+        return queryset

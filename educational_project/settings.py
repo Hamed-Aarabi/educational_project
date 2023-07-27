@@ -17,7 +17,6 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -29,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,12 +38,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'active_link',
-    #My App's
+
+    # My App's
     'account.apps.AccountConfig',
     'course.apps.CourseConfig',
+    'contactus.apps.ContactusConfig',
+    'blog.apps.BlogConfig',
+    'cart.apps.CartConfig',
+    'common_views.apps.CommonViewsConfig',
 
+
+    'django.contrib.humanize',
     'django_cleanup.apps.CleanupConfig',
+    'django_render_partial',
 
 ]
 
@@ -73,7 +78,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # 'context_processors.context_processors.user_panel_urls',
+                'context_processors.context_processors.get_tags_course',
+                'context_processors.context_processors.get_tags_blog',
+                'context_processors.context_processors.cart_item',
 
             ],
         },
@@ -81,7 +88,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'educational_project.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -92,7 +98,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -112,7 +117,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -122,8 +126,7 @@ TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 
-USE_TZ = True
-
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -138,7 +141,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "account.MyUser"
-AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend", 'account.authentications.AuthWithEmail', 'account.authentications.AuthWithUsername']
+AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend", 'account.authentications.AuthWithEmail',
+                           'account.authentications.AuthWithUsername']
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = BASE_DIR / 'emails'
-

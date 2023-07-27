@@ -7,10 +7,11 @@ app_name= 'account'
 
 urlpatterns = [
     path('userpanel/<str:username>/home', views.UserPanelView.as_view(), name='user_panel'),
-    path('userpanel/<str:username>/update', views.UserUpdatingView.as_view(), name='user_panel_update'),
+    path('userpanel/<str:username>/update', views.user_update_view, name='user_panel_update'),
     path('userpanel/<str:username>/courses', views.UserCoursesView.as_view(), name='user_panel_courses'),
     path('userpanel/<str:username>/comments', views.UserCommentsView.as_view(), name='user_panel_comments'),
     path('userpanel/<str:username>/comments/delete/<int:id>', views.delete_comment, name='user_panel_del_comments'),
+    path('userpanel/<str:username>/tickets/', views.TicketView.as_view(), name='user_panel_ticket'),
     path('signup',views.SignUpView.as_view(), name='signup'),
     path('login',views.LoginView.as_view(), name='login'),
     path('logout', views.logout_view, name='logout'),

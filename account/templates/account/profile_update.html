@@ -19,7 +19,19 @@
 
                     <form method="post" enctype="multipart/form-data"><!-- start personal info form -->
                         {% csrf_token %}
-
+                        {% if  form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+                        {% elif messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger" role="alert">{{ message }}</div>
+                            {% endfor %}
+                        {% else %}
+                            {% for field in form %}
+                                {% if field.errors %}
+                                    <div class="alert alert-danger" role="alert">{{ field.errors }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
                         <div class="mb-3">
 
                             <label for="name" class="form-label font-13 ">نام :</label>
@@ -74,9 +86,9 @@
 
                             <select class="form-select" name="sex">
 
-                                    <option>{{ form.sex.0 }}</option>
-                                    <option>{{ form.sex.1 }}</option>
-                                    <option>{{ form.sex.2}}</option>
+                                <option>{{ form.sex.0 }}</option>
+                                <option>{{ form.sex.1 }}</option>
+                                <option>{{ form.sex.2 }}</option>
 
                             </select>
 

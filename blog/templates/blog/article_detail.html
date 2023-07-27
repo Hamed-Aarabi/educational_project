@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container my-3"><!-- start breadcrumb -->
+
+        <ul class="breadcrumb shadow-sm bg-light p-2">
+
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="font-12 vazir-font text-secondary">صفحه
+                اصلی</a></li>
+
+            <li class="breadcrumb-item"><a href="{% url 'blog:list' %}" class="ps-2 font-12 vazir-font  text-secondary">بلاگ</a>
+            </li>
+
+            <li class="breadcrumb-item"><a href="{% url 'blog:detail' article.slug %}"
+                                           class="ps-2 font-12 vazir-font  text-secondary">{{ article.title }}</a></li>
+
+        </ul>
+
+    </div><!-- end breadcrumb -->
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-12">
+
+                <img src="{{ article.image.url }}" class="article-pic"><!-- article image -->
+
+            </div>
+
+        </div>
+
+        <div class="row"><!-- start article content-->
+
+            <div class="col-lg-12">
+
+                <h1 class="font-18 mt-5 mb-4">{{ article.title }}</h1>
+
+                <div class="mb-3">
+
+                    <span class="text-muted  font-12"><i
+                            class="fa fa-pen text-success me-2"></i>{{ article.article_author }}</span>
+
+                    <span class="text-muted ps-3 font-12"><i
+                            class="fa fa-calendar me-2"></i>{{ article.created_at.year }}/{{ article.created_at.month }}/{{ article.created_at.day }}</span>
+
+                    <span class="text-muted ps-3 font-12"><i
+                            class="fa fa-eye text-info me-2"></i>{{ article.total_views }}</span>
+
+                    <span class="text-muted ps-3 font-12">دسته بندی : {{ article.category }}</span>
+
+                </div>
+
+                <p class="font-14 line-height text-justify">{{ article.text }}</p>
+
+
+            </div>
+        </div><!-- end article content-->
+
+        <div class="row"><!-- start tags -->
+
+            <div class="col-lg-12">
+                {% for tag in article.tag.all %}
+                    <span class="font-13 vazir-font bg-light p-1 border rounded"># {{ tag }}</span>
+                {% endfor %}
+
+            </div>
+
+        </div><!-- end tags -->
+
+    </div>
+
+    {% include 'blog/includes/comment_section_article.html' %}<!-- end comment item -->
+
+    <div class="container d-flex justify-content-between mt-5 mb-4"><!-- start title-->
+
+        <div class="title">
+
+            <p class="font-14 ps-2"> مطالب پیشنهادی </p>
+
+            <p class="font-12 ps-3 text-muted"> همیشه به روز باش!</p>
+
+        </div>
+
+        <a href="{% url 'blog:list' %}" class="title-btn align-self-start">همه مقالات<i
+                class="fa fa-arrow-left align-middle ms-1"></i></a>
+
+    </div><!-- end title-->
+
+
+    <div class="container"><!-- start article box -->
+
+        <div class="row">
+            {% for item in suggested_articles %}
+            <div class="col-lg-4 col-sm-6"><!-- start article item -->
+
+                <div class="card shadow-sm mb-3 article-card">
+
+                    <img src="{{ item.image.url }}" class="img-fluid">
+
+                    <div class="card-body">
+
+                        <a href="{% url 'blog:detail' item.slug %}" class="text-dark d-block my-2">{{ item.title }} </a>
+
+                        <p class="font-13 text-justify line-height vazir-font">{{ item.text }}</p>
+
+                        <span class="font-12 vazir-font"><i class="fa fa-pen font-12 text-secondary align-middlle"></i> {{ item.author.full_name }}</span>
+
+                        <a href="{% url 'blog:detail' item.slug %}" class="btn btn-info font-12 float-end">ادامه مطلب</a>
+
+                    </div>
+
+                </div>
+
+            </div><!-- end article item -->
+            {% endfor %}
+
+
+
+
+        </div>
+
+    </div><!-- end article box -->
+{% endblock %}

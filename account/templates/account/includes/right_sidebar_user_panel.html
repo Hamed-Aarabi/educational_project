@@ -1,5 +1,5 @@
 {% load static %}
-{% load active_link_tags %}
+
 <div class="col-lg-3 "><!-- start right sidebar -->
 
     <div class="card border-0 shadow-sm bg-info my-3 p-3"><!-- start avatar box -->
@@ -26,7 +26,7 @@
         <a href="{% url 'account:user_panel_comments' request.user.username %}" class="list-group-item list-group-item-action font-13 text-{% if request.resolver_match.url_name == 'user_panel_comments' %}info{% endif %}"><i
                 class="far fa-comment align-middle me-2 font-13  text-secondary"></i>نظرات </a>
 
-        <a href="profile-tickets.html" class="list-group-item list-group-item-action font-13 text-dark"><i
+        <a href="{% url 'account:user_panel_ticket' request.user.username %}" class="list-group-item list-group-item-action font-13 text-{% if request.resolver_match.url_name == 'user_panel_ticket' %}info{% endif %}"><i
                 class="fas fa-tags align-middle me-2 font-12 text-secondary"></i>تیکت ها </a>
 
         <a href="{% url 'account:user_panel_update' request.user.username %}" class="list-group-item list-group-item-action font-13 text-{% if request.resolver_match.url_name == 'user_panel_update' %}info{% endif %}"><i
