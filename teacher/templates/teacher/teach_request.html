@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="team-box pt-3"><!-- start team box -->
+
+        <div class="container"><!-- start breadcrumb -->
+
+            <ul class="breadcrumb shadow-sm bg-white p-2">
+
+                <li class="breadcrumb-item"><a href="{% url 'home' %}" class="font-12 vazir-font text-secondary">صفحه
+                    اصلی</a></li>
+
+                <li class="breadcrumb-item"><a href="" class="ps-2 font-12 vazir-font  text-secondary">درخواست
+                    تدریس</a></li>
+
+            </ul>
+
+        </div><!-- end breadcrumb -->
+
+        <div class="container d-flex justify-content-between"><!-- start title-->
+
+            <div class="title my-3">
+
+                <p class="font-14 ps-2">بهترین مدرسین ما </p>
+
+                <p class="font-12 ps-3 text-muted">با حرفه ای ها آموزش ببین !</p>
+
+            </div>
+
+        </div><!-- end title-->
+
+
+        <div class="container">
+
+            <div class="row">
+                {% for teacher in teachers %}
+                    <div class="col-lg-3 col-sm-6"><!-- start team item -->
+
+                        <div class="team-item mb-3">
+
+                            <div class="team-image">
+                                {% if teacher.teacher.image %}
+                                    <img src="{{ teacher.teacher.image.url }}" style="width: 200px; height: 200px">
+                                {% else %}
+                                    <img src="{% static 'images/team_1.jpg' %}">
+                                {% endif %}
+
+
+                            </div>
+
+                            <div class="team-body">
+
+                                <p class="team-name">{{ teacher.teacher.full_name }} ({{ teacher.field }})</p>
+
+                                <div class="social-list">
+                                    {% for item in teacher.teacher_socials.all %}
+                                        <a href="#"><i class="fab fa-{{ item.social }}"></i></a>
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div><!-- end team item -->
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div><!-- end team box -->
+
+    <div class="container d-flex justify-content-between mt-5 mb-4"><!-- start title-->
+
+        <div class="title">
+
+            <p class="font-14 ps-2">ثبت موضوع آموزشی </p>
+
+            <p class="font-12 ps-3 text-muted">بخش‌ های قوانین تولید و استانداردها را به دقت مطالعه کنید!</p>
+
+        </div>
+
+    </div><!-- end title-->
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-6"><!-- start teach form -->
+
+                <form id="teach-form" method="post">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+
+                        {{ form.fullname }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        {{ form.email }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        {{ form.phone }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        {{ form.field }}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        {{ form.description }}
+
+                    </div>
+
+                    <button type="submit" class="btn btn-lg btn-info font-13 float-end mb-4">ثبت درخواست</button>
+                    <div id="result"></div>
+
+                </form>
+
+            </div><!-- end teach form -->
+
+            <div class="col-lg-6 mb-4"><!-- start accordion -->
+
+                <div class="accordion" id="accordion">
+                    {% for rule in rules %}
+                        <div class="accordion-item">
+
+                            <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+
+                                <button class="accordion-button collapsed font-14 vazir-font text-muted" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}"
+                                        aria-expanded="false"
+                                        aria-controls="collapse{{ forloop.counter }}">
+                                    {{ rule.title }}
+                                </button>
+
+                            </h2>
+
+                            <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse"
+                                 aria-labelledby="heading{{ forloop.counter }}"
+                                 data-bs-parent="#accordion">
+
+                                <div class="accordion-body">
+
+                                    <p class="vazir-font font-13 text-justify line-height">{{ rule.description }}</p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    {% endfor %}
+
+                </div><!-- end accordion -->
+
+            </div>
+
+        </div>
+{% endblock %}

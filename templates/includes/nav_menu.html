@@ -30,7 +30,7 @@
                     {% else %}
                         <li><a href="{% url 'account:user_panel' request.user.username %}">پروفایل کاربر</a></li>
 
-                        <li><a href="teach.html">درخواست تدریس</a></li>
+                        <li><a href="{% url 'teacher:teach_page' %}">درخواست تدریس</a></li>
 
                         <li><a href="{% url 'cart:detail' %}">سبد خرید </a></li>
                     {% endif %}

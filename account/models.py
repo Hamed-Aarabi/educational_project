@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from .managers import MyUserManager
+# from teach.models import Teacher
 
 CHOICE_SEX = (
     ('man', 'مرد'),
@@ -19,6 +20,8 @@ class MyUser(AbstractBaseUser):
     sex = models.CharField(choices=CHOICE_SEX, max_length=5, verbose_name='جنسیت')
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    is_student = models.BooleanField(default=True)
+    is_teacher = models.BooleanField(default=False)
 
     objects = MyUserManager()
 
@@ -26,7 +29,7 @@ class MyUser(AbstractBaseUser):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.phone
+        return self.email
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
@@ -49,7 +52,9 @@ class MyUser(AbstractBaseUser):
 
     def save(self, *args, **kwargs):
         if not self.username:
-            self.username = f'user{self.phone[-2:]}'
+            self.username = f'{self.email}{self.phone[-2:]}'
+        # if self.is_teacher:
+        #     Teacher.objects.create(teacher=self)
         return super(MyUser, self).save(*args, **kwargs)
 
 

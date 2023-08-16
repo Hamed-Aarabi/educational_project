@@ -1,4 +1,5 @@
 {% load static %}
+{% load render_partial %}
 <header class="d-lg-none container"><!-- start responsive header -->
 
     <div class="row">
@@ -10,7 +11,7 @@
             <a href="#shopping-bag-responsive" class="position-relative me-4" data-bs-toggle="offcanvas"><img
                     src="{% static 'images/bag.png' %}" class="shopping-bag-icon"><!-- start shopping bag-->
 
-                <div class="count">2</div>
+                <div class="count">{{ cart.cart_len }}</div>
 
             </a><!-- end shopping bag-->
 
@@ -19,91 +20,43 @@
 
                 <div class="offcanvas-header mb-3"><!-- start bag header -->
 
-                    <p class="offcanvas-title font-12">سبد خرید (4 کالا)</p>
+                    <p class="offcanvas-title font-12">سبد خرید ({{ cart.cart_len }} کالا)</p>
 
                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
 
                 </div><!-- end bag header -->
 
                 <div class="offcanvas-body"><!-- start bag body -->
-
+                    {% for item in cart %}
                     <div class="cart-item d-flex align-items-center justify-content-between"><!-- start cart item -->
 
-                        <a href="course.html"><img src="{% static 'images/flutter.png' %}"></a>
+                        <a href="course.html"><img src="{{ item.image }}"></a>
 
                         <div class="cart-item-detail">
 
-                            <a href="contactus.html">آموزش حرفه ای Flutter</a>
+                            <a href="contactus.html">{{ item.name}}</a>
 
-                            <p class="font-12 text-muted mt-3">320.000 تومان</p>
-
-                        </div>
-
-                        <a href="#" class="delete-item"><i class="fa fa-times"></i></a>
-
-                    </div><!-- end cart item -->
-
-                    <div class="cart-item d-flex align-items-center justify-content-between"><!-- start cart item -->
-
-                        <a href="course.html"><img src="{% static 'images/flutter.png' %}"></a>
-
-                        <div class="cart-item-detail">
-
-                            <a href="course.html">آموزش حرفه ای Flutter</a>
-
-                            <p class="font-12 text-muted mt-3">320.000 تومان</p>
+                            <p class="font-12 text-muted mt-3">{{ item.price }} تومان</p>
 
                         </div>
 
-                        <a href="#" class="delete-item"><i class="fa fa-times"></i></a>
+                        <a href="{% url 'cart:remove-item' item.unique %}" class="delete-item"><i class="fa fa-times"></i></a>
 
                     </div><!-- end cart item -->
-
-                    <div class="cart-item d-flex align-items-center justify-content-between"><!-- start cart item -->
-
-                        <a href="course.html"><img src="{% static 'images/flutter.png' %}"></a>
-
-                        <div class="cart-item-detail">
-
-                            <a href="course.html">آموزش حرفه ای Flutter</a>
-
-                            <p class="font-12 text-muted mt-3">320.000 تومان</p>
-
-                        </div>
-
-                        <a href="#" class="delete-item"><i class="fa fa-times"></i></a>
-
-                    </div><!-- end cart item -->
-
-                    <div class="cart-item d-flex align-items-center justify-content-between"><!-- start cart item -->
-
-                        <a href="course.html"><img src="{% static 'images/flutter.png' %}"></a>
-
-                        <div class="cart-item-detail">
-
-                            <a href="course.html">آموزش حرفه ای Flutter</a>
-
-                            <p class="font-12 text-muted mt-3">320.000 تومان</p>
-
-                        </div>
-
-                        <a href="#" class="delete-item"><i class="fa fa-times"></i></a>
-
-                    </div><!-- end cart item -->
-
+                    {% endfor %}
                 </div><!-- end bag body -->
 
                 <div class="d-flex justify-content-between align-items-center px-3 pt-3">
 
                     <p class="font-13">مبلغ کل :</p>
 
-                    <p class="font-13">1,350,000 تومان</p>
+                    <p class="font-13">{{ cart.total}} تومان</p>
 
                 </div>
 
                 <a href="#" class="btn btn-info font-13 m-2 p-2">پرداخت</a>
 
-                <a href="cart" class="btn btn-secondary font-13 m-2 p-2">مشاهده سبد خرید</a>
+                <a href="{% url 'cart:detail' %}" class="btn btn-secondary font-13 m-2 p-2">مشاهده سبد خرید</a>
 
             </div><!-- end shopping bag side bar -->
 
@@ -133,31 +86,10 @@
                     <ul class="responsive-menu-level-1 ps-0 mt-5"><!-- start menu level 1 -->
 
                         <li class="menu-item"><a href="{% url 'home' %}">صفحه اصلی</a></li>
-
                         <li class="menu-item has-sub-menu"><a href="#">دوره های آموزشی</a>
-
                             <ul class="responsive-menu-level-2 ps-0"><!-- start menu level 2 -->
-
-                                <li class="menu-item-2 has-sub-menu-2"><a href="#">دوره های آموزش برنامه نویسی</a>
-
-                                    <ul class="responsive-menu-level-3 ps-0"><!-- start menu level 3 -->
-
-                                        <li class="menu-item-3"><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                                        <li class="menu-item-3"><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                                        <li class="menu-item-3"><a href="course.html">آموزش برنامه نویسی</a></li>
-
-                                    </ul><!-- end menu level 3 -->
-
-                                </li>
-
-                                <li class="menu-item-2"><a href="category.html">دوره های آموزش برنامه نویسی</a></li>
-
-                                <li class="menu-item-2"><a href="category.html">دوره های آموزش برنامه نویسی</a></li>
-
+                                {% render_partial 'course:partial_view_responsive' %}
                             </ul><!-- end menu level 2 -->
-
                         </li>
 
                         <li class="menu-item has-sub-menu"><a href="#">صفحات </a>

@@ -12,19 +12,79 @@
         window.location.href = '#text'
     }
 
-    function like_comment(url,slug, pk) {
+    function like_comment(url, slug, pk) {
         $.get(`${url}/${slug}/like_comment/${pk}`).then(response => {
             location.reload()
         })
     }
-     function dislike_comment(url,slug, pk) {
+
+    function dislike_comment(url, slug, pk) {
         $.get(`${url}/${slug}/dislike_comment/${pk}`).then(response => {
             location.reload()
         })
     }
-       function heart_comment(url,slug, pk) {
+
+    function heart_comment(url, slug, pk) {
         $.get(`${url}/${slug}/heart_comment/${pk}`).then(response => {
             location.reload()
         })
     }
+
+    <!-- ajax forms -->
+
+    <!-- teach request form -->
+    $('#teach-form').submit(function (e) {
+
+        e.preventDefault();
+
+        $.ajax({
+            type: "POST",
+            url: "/teach/",
+            data: $(this).serialize(),
+            success: function (response) {
+                $("#result").html("درخواست شما با موفقیت ثبت شد.");
+                $('#teach-form').trigger('reset');
+            }
+        });
+
+    });
+    <!-- end teach request form -->
+
+    <!-- counsel form -->
+    $('#counsel-form').submit(function (e) {
+
+        e.preventDefault();
+
+        $.ajax({
+            type: "POST",
+            url: "",
+            data: $(this).serialize(),
+            success: function (response) {
+                $("#result-counsel").html("درخواست شما با موفقیت ثبت شد.");
+                $('#counsel-form').trigger('reset');
+            }
+        });
+
+    });
+    <!-- end counsel form -->
+
+    <!-- contactus form -->
+    $('#contactus-form').submit(function (e) {
+
+        e.preventDefault();
+
+        $.ajax({
+            type: "POST",
+            url: "/contact-us/",
+            data: $(this).serialize(),
+            success: function (response) {
+                $("#result-contactus").html("پیام شما با موفقیت ارسال شد.");
+                $('#contactus-form').trigger('reset');
+            }
+        });
+
+    });
+    <!-- end contactus form -->
+
+    <!-- end ajax forms -->
 </script>

@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'cart.apps.CartConfig',
     'common_views.apps.CommonViewsConfig',
-
+    'teacher.apps.TeacherConfig',
 
     'django.contrib.humanize',
     'django_cleanup.apps.CleanupConfig',

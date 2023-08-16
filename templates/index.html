@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load render_partial %}
 
 {% block content %}
     <div class="d-none d-md-block banner text-center"><!-- start banner -->
@@ -132,30 +133,31 @@
 
                 </div> <!-- end title-->
 
-                <form><!-- start contact form -->
+                <form id="counsel-form" method="post"><!-- start contact form -->
+                    {% csrf_token %}
 
                     <div class="mb-3">
 
-                        <input type="text" class="form-control form-control-lg" placeholder="نام و نام خانوادگی ">
+                        {{ form.fullname }}
 
                     </div>
 
                     <div class="mb-3">
 
-                        <input type="email" class="form-control form-control-lg" placeholder="ایمیل">
+                        {{ form.email }}
 
                     </div>
 
                     <div class="mb-4">
 
-                        <input type="tel" class="form-control form-control-lg" placeholder="شماره تلفن">
+                        {{ form.phone }}
 
                     </div>
 
                     <input type="submit" value="ثبت درخواست مشاوره" class="btn btn-info btn-lg font-13 mb-4">
+                    <div id="result-counsel"></div>
 
                 </form><!-- end contact form -->
-
             </div>
 
             <div class="col-lg-7 ps-3">
@@ -167,139 +169,6 @@
         </div>
 
     </div>
-
-
-    <div class="container d-flex justify-content-between mt-5 mb-3"><!-- start title-->
-
-        <div class="title">
-
-            <p class="font-14 ps-2">عضو ویژه شوید </p>
-
-            <p class="font-12 ps-3 text-muted">با تهیه اشتراک ویژه به تمام آموزش های ویژه سایت دسترسی دارید!</p>
-
-        </div>
-
-    </div><!-- end title-->
-
-    <div class="container"><!-- start price plans -->
-
-        <div class="row">
-
-            <div class="col-lg-4 col-sm-6"><!-- start plan item -->
-
-                <div class="card custom-card-signup shadow-sm card-1">
-
-                    <div class="circle">
-
-                        <h5>اشتراک یکماهه</h5>
-
-                        <p class="text-white">120.000 تومان</p>
-
-                    </div>
-
-                    <div class="card-body">
-
-                        <p class="font-14 line-height">شما می توانید به مدت یک ماه به دوره های ویژه سایت دسترسی داشته
-                            باشید.</p>
-
-                        <p class="font-13 text-secondary"><i class="fa fa-check align-middle me-1 text-secondary"></i>دسترسی
-                            به تمام آموزش های ویژه سایت</p>
-
-                        <p class="font-13 text-secondary"><i class="fa fa-check align-middle me-1 text-secondary"></i>هزینه
-                            کم و دسترسی کامل</p>
-
-                        <div class="w-100 text-center">
-
-                            <a href="signup.html" class="btn btn-sm btn-outline-secondary px-3 mt-2"> ثبت نام <i
-                                    class="fa fa-arrow-left align-middle"></i></a>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end plan item -->
-
-
-            <div class="col-lg-4 col-sm-6"><!-- start plan item -->
-
-                <div class="card custom-card-signup shadow-sm card-2">
-
-                    <div class="circle">
-
-                        <h5>اشتراک 3 ماهه</h5>
-
-                        <p class="text-white">300.000 تومان</p>
-
-                    </div>
-
-                    <div class="card-body">
-
-                        <p class="font-14 line-height">شما می توانید به مدت 3 ماه به دوره های ویژه سایت دسترسی داشته
-                            باشید.</p>
-
-                        <p class="font-13  text-secondary"><i class="fa fa-check align-middle me-1 text-secondary"></i>دسترسی
-                            به تمام آموزش های ویژه سایت</p>
-
-                        <p class="font-13  text-secondary"><i class="fa fa-check align-middle me-1 text-secondary"></i>سه
-                            روز مهلت تست رایگان !</p>
-
-                        <div class="w-100 text-center">
-
-                            <a href="signup.html" class="btn btn-sm btn-outline-warning px-3 mt-2" id="contact2"> ثبت
-                                نام <i
-                                        class="fa fa-arrow-left align-middle"></i></a>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end plan item -->
-
-            <div class="col-lg-4 col-sm-6"><!-- start plan item -->
-
-                <div class="card custom-card-signup shadow-sm card-3">
-
-                    <div class="circle">
-
-                        <h5>اشتراک یکساله</h5>
-
-                        <p class="text-white">700.000 تومان</p>
-
-                    </div>
-
-                    <div class="card-body">
-
-                        <p class="font-14 line-height">شما می توانید به مدت یک سال به دوره های ویژه سایت دسترسی داشته
-                            باشید.</p>
-
-                        <p class="font-13 text-secondary"><i class="fa fa-check align-middle me-1 text-secondary"></i>دسترسی
-                            به تمام آموزش های ویژه سایت</p>
-
-                        <p class="font-13 text-secondary"><i class="fa fa-check align-middle me-1 text-secondary"></i>محبوب
-                            و مقرون به صرفه</p>
-
-                        <div class="w-100 text-center">
-
-                            <a href="signup.html" class="btn btn-sm btn-outline-primary px-3 mt-2" id="contact3"> ثبت
-                                نام <i
-                                        class="fa fa-arrow-left align-middle"></i></a>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end plan item -->
-
-        </div>
-
-    </div><!-- end price plans -->
-
 
     <div class="team-box"><!-- start comment slider -->
 
@@ -522,89 +391,32 @@
     <div class="container"><!-- start article box -->
 
         <div class="row">
+            {% for article in random_articles %}
+                <div class="col-lg-4 col-sm-6"><!-- start article item -->
 
-            <div class="col-lg-4 col-sm-6"><!-- start article item -->
+                    <div class="card shadow-sm mb-3 article-card">
 
-                <div class="card shadow-sm mb-3 article-card">
+                        <img src="{{ article.image.url }}" class="img-fluid">
 
-                    <img src="{% static 'images/article1.jpg' %}" class="img-fluid">
+                        <div class="card-body">
 
-                    <div class="card-body">
+                            <a href="{% url 'blog:detail' article.slug %}"
+                               class="text-dark d-block my-2">{{ article.title }}</a>
 
-                        <a href="article.html" class="text-dark d-block my-2">چگونه مطالعه آنلاین را شروع کنیم ؟ </a>
+                            <p class="font-13 text-justify line-height vazir-font">{{ article.text }}</p>
 
-                        <p class="font-13 text-justify line-height vazir-font">لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم
-                            از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
+                            <span class="font-12 vazir-font"><i
+                                    class="fa fa-pen font-12 text-secondary align-middlle"></i> {{ article.author.username }}</span>
 
-                        <span class="font-12 vazir-font"><i class="fa fa-pen font-12 text-secondary align-middlle"></i> علی نوروزی</span>
+                            <a href="{% url 'blog:detail' article.slug %}" class="btn btn-info font-12 float-end">ادامه
+                                مطلب</a>
 
-                        <a href="article.html" class="btn btn-info font-12 float-end">ادامه مطلب</a>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end article item -->
-
-
-            <div class="col-lg-4 col-sm-6"><!-- start article item -->
-
-                <div class="card shadow-sm mb-3 article-card">
-
-                    <img src="{% static 'images/article2.jpg' %}" class="img-fluid">
-
-                    <div class="card-body">
-
-                        <a href="article.html" class="text-dark d-block my-2">بهترین زمان ارسال پست در اینستاگرام</a>
-
-                        <p class="font-13 text-justify line-height vazir-font">لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم
-                            از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-
-                        <span class="font-12 vazir-font"><i class="fa fa-pen font-12 text-secondary align-middlle"></i> علی نوروزی</span>
-
-                        <a href="article.html" class="btn btn-info font-12 float-end">ادامه مطلب</a>
+                        </div>
 
                     </div>
 
-                </div>
-
-            </div><!-- end article item -->
-
-
-            <div class="col-lg-4 col-sm-6"><!-- start article item -->
-
-                <div class="card shadow-sm mb-3 article-card">
-
-                    <img src="{% static 'images/article3.jpg' %}" class="img-fluid">
-
-                    <div class="card-body">
-
-                        <a href="article.html" class="text-dark d-block my-2">تله های خطرناک در سخنرانی</a>
-
-                        <p class="font-13 text-justify line-height vazir-font">لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم
-                            از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-
-                        <span class="font-12 vazir-font"><i class="fa fa-pen font-12 text-secondary align-middlle"></i> علی نوروزی</span>
-
-                        <a href="article.html" class="btn btn-info font-12 float-end">ادامه مطلب</a>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end article item -->
+                </div><!-- end article item -->
+            {% endfor %}
 
         </div>
 

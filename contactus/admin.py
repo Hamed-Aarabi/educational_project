@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Contactus
+from .models import *
 
 
 
@@ -8,3 +8,6 @@ class ContacusAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'subject')
 
 
+@admin.register(Counsel)
+class CounselAdmin(admin.ModelAdmin):
+    list_display = ('fullname', 'email', 'status')

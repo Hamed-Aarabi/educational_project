@@ -104,3 +104,14 @@ class CategoryListView(ListView):
         queryset = super(CategoryListView, self).get_queryset()
         queryset = Course.objects.filter(category__name__icontains=self.kwargs.get('name'))
         return queryset
+
+
+class PartialViewResponsive(TemplateView):
+    template_name = 'course/partial_view_responsive.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(PartialViewResponsive, self).get_context_data(**kwargs)
+        categories = Category.objects.annotate(
+            num_child_category=Count('child_category')).order_by('-num_child_category', )
+        context['categories'] = categories
+        return context

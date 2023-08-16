@@ -1,0 +1,20 @@
+{% for categorie in categories %}
+    {% if not categorie.parent %}
+        {% if categorie.child_category.all %}
+            <li class="menu-item-2 has-sub-menu-2"><a href="#">{{ categorie.name }}</a>
+                <ul class="responsive-menu-level-3 ps-0"><!-- start menu level 3 -->
+                    {% for item in categorie.child_category.all %}
+                        <li class="menu-item-3"><a href="{% url 'course:category_list' item.name %}">{{ item.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul><!-- end menu level 3 -->
+            </li>
+        {% else %}
+            <li class="menu-item-2"><a href="{% url 'course:category_list' categorie.name %}">{{ categorie.name }}</a>
+            </li>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+
+

@@ -21,16 +21,15 @@ from . import settings
 from django.views.generic import RedirectView
 from . import views
 
-
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.HomeView.as_view(), name='home'),
-    path('account/', include('account.urls')),
-    path('courses/', include('course.urls')),
-    path('contact-us/', include('contactus.urls')),
-    path('blogs/', include('blog.urls')),
-    path('cart/', include('cart.urls'))
+                  path('admin/', admin.site.urls),
+                  path('', views.HomeView.as_view(), name='home'),
+                  path('account/', include('account.urls')),
+                  path('courses/', include('course.urls')),
+                  path('contact-us/', include('contactus.urls')),
+                  path('blogs/', include('blog.urls')),
+                  path('teach/', include('teacher.urls')),
+                  path('cart/', include('cart.urls')),
 
 
-
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
