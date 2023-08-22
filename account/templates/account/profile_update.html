@@ -74,6 +74,10 @@
                         </div>
 
                         <label for="password" class="form-label font-13 mb-2"> عکس پروفایل : </label>
+                        {% if request.user.image %}
+                            <img src="{{ request.user.image.url }}" height="50px", width="50px">
+                            <a href="{% url 'account:delete_image' request.user.username %}" style="text-decoration: none"><span style="color: red">&#10005;</span></a>
+                        {% endif %}
 
                         <div class="input-group mb-3">
 
@@ -85,10 +89,9 @@
                             <label for="sex" class="form-label font-13 mb-2">جنسیت :</label>
 
                             <select class="form-select" name="sex">
-
-                                <option>{{ form.sex.0 }}</option>
-                                <option>{{ form.sex.1 }}</option>
-                                <option>{{ form.sex.2 }}</option>
+                                {% for value,item in form.SEX_CHOICES %}
+                                    <option value="{{ value }}">{{ item }}</option>
+                                {% endfor %}
 
                             </select>
 

@@ -96,46 +96,23 @@
                     <div class="row mt-4 mx-1  bg-light rounded p-3 shadow-sm"><!-- start notifications -->
 
                         <span class="font-13"><i class="fa fa-bell align-middle text-warning font-18 me-1"></i>جدیدترین اطلاعیه ها</span>
+                        {% for noty in notify %}
+                            <div class="col-12">
 
-                        <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center mt-4">
 
-                            <div class="d-flex justify-content-between align-items-center mt-4">
+                                    <p class="font-13">{{ noty.title }}</p>
 
-                                <p class="font-13">دوره آموزشی لاراول منتشر شد .</p>
+                                    <span class="font-13 text-muted">{{ noty.created_at.year }}/{{ noty.created_at.month }}/{{ noty.created_at.day }}<i
+                                            class="fa fa-calendar font-14 ms-2"></i></span>
 
-                                <span class="font-13 text-muted">1401/10/8<i
-                                        class="fa fa-calendar font-14 ms-2"></i></span>
+                                </div>
 
-                            </div>
-
-                            <p class="font-13 vazir-font line-height">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
-                                صنعت چاپ و با استفاده
-                                از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
-                                و برای شرایط فعلی تکنولوژی
-                                مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد
-                            </p>
-
-                        </div>
-
-                        <div class="col-12">
-
-                            <div class="d-flex justify-content-between align-items-center mt-4">
-
-                                <p class="font-13">تخفیف ویژه برای دوره جاوااسکریپت .</p>
-
-                                <span class="font-13 text-muted">1401/10/8<i
-                                        class="fa fa-calendar font-14 ms-2"></i></span>
+                                <p class="font-13 vazir-font line-height">{{ noty.text }}</p>
 
                             </div>
+                        {% endfor %}
 
-                            <p class="font-13 vazir-font line-height">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
-                                صنعت چاپ و با استفاده
-                                از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
-                                و برای شرایط فعلی تکنولوژی
-                                مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد
-                            </p>
-
-                        </div>
 
                     </div><!-- end notifications -->
 

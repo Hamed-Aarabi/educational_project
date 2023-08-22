@@ -54,7 +54,7 @@ class Course(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_free = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
-    category = models.ManyToManyField(Category, null=True, related_name='course_category')
+    category = models.ManyToManyField(Category, related_name='course_category')
 
     def __str__(self):
         return self.title

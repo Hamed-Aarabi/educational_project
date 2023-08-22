@@ -31,9 +31,13 @@ class OrderCreateView(View):
         cart = Cart(request)
         if cart.cart_len() > 0:
             order = Order.objects.create(user=request.user, final_price=cart.total())
+
             for item in cart:
                 OrderItem.objects.create(order=order, name=item['name'], quantity=item['quantity'], image=item['image'],
                                          price=item['price'])
+                course = Course.objects.get(title=item['name'])
+                course.student.add(order.user)
+                course.save()
             cart.delete()
             return redirect('home')
         else:

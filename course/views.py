@@ -2,10 +2,11 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, View, TemplateView
 from common_views.views import *
-from django.db.models import Count
+from django.db.models import Count, Q
 from .models import *
 from .filters import course_filters
-
+from datetime import datetime
+from django.core.paginator import Paginator
 
 class CourseDetailView(View):
     def get(self, request, slug):
@@ -16,8 +17,13 @@ class CourseDetailView(View):
             allow = True
         comments = course.comment_of_courses.filter(parent=None)
         page_obj = comment_paginator(request, comments)
+        tutor_date_joined = (datetime.today() - course.tutor.date_joined).days / 365
+        suggested_courses = Course.objects.filter(Q(tutor__username=course.tutor.username)).exclude(id=course.id)
+        if len(suggested_courses) > 3:
+            suggested_courses = suggested_courses[len(suggested_courses) - 3:]
         return render(request, 'course/course_detail.html',
-                      {'course': course, 'allow': allow, 'page_obj': page_obj, 'app_name': app_name})
+                      {'course': course, 'allow': allow, 'page_obj': page_obj, 'app_name': app_name,
+                       'tutor_date_joined': tutor_date_joined, 'suggested_courses': suggested_courses})
 
     def post(self, request, slug):
         name, email, parent, text = create_comment(request)
@@ -34,18 +40,16 @@ class CourseListView(ListView):
     paginate_by = 1
 
 
-class SearchBoxView(ListView):
-    template_name = 'course/course_list.html'
-    model = Course
-    paginate_by = 1
-    context_object_name = 'courses'
-
-    def get_queryset(self):
+class SearchBoxView(View):
+    def get(self, request):
         query = self.request.GET.get('q')
-        object_list = None
-        if query:
-            object_list = Course.objects.filter(title__icontains=query)
-        return object_list
+        if not query:
+            return redirect('home')
+        courses = Course.objects.filter(title__icontains=query)
+        paginator = Paginator(courses, 1)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'course/course_list.html', {'courses': page_obj, 'page_obj':page_obj})
 
 
 class CoursesFilter(ListView):

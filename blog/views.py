@@ -21,14 +21,19 @@ class BlogDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(BlogDetailView, self).get_context_data(**kwargs)
-        context['app_name'] = get_app_name(self.request)
+
         article = Article.objects.get(slug__regex=self.kwargs.get('slug'))
         comments = article.comment_of_articles.filter(parent=None)
-        context['page_obj'] = comment_paginator(self.request, comments)
         suggested_articles = Article.objects.filter(
-            Q(category__exact=article.category) | Q(author__username=article.author.username))
-        if len(suggested_articles) > 3:
-            context['suggested_articles'] = suggested_articles
+            Q(category__exact=article.category) | Q(author__username=article.author.username)).exclude(id=article.id)
+
+        context['suggested_articles'] = suggested_articles
+        context['page_obj'] = comment_paginator(self.request, comments)
+        context['app_name'] = get_app_name(self.request)
+
+        if not article.views.filter(id=self.request.user.id).exists():
+            article.views.add(self.request.user.id)
+            article.save()
         return context
 
     def post(self, request, slug):

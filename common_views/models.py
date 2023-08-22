@@ -38,4 +38,3 @@ class CommentBaseClass(models.Model):
         verbose_name = 'کامنت'
         verbose_name_plural = 'کامنت ها'
         ordering = ('-created_at',)
-

@@ -5,7 +5,6 @@
 {% block content %}
 
 
-
     <div class="container my-3"><!-- start breadcrumb -->
 
         <ul class="breadcrumb shadow-sm bg-light p-2">
@@ -63,12 +62,17 @@
                     {% endif %}
 
                 </ul>
-
-                <a href="{% url 'cart:add-item' course.slug %}" class="btn btn-info btn-block mt-3 py-2 font-13"><i class="fa fa-cart-plus align-middle"></i>
-                    افزودن
-                    به سبد خرید
-                </a>
-
+                {% if allow %}
+                    <a class="btn btn-info btn-block mt-3 py-2 font-13">
+                        شما دوره را خریداری کرده اید.
+                    </a>
+                {% else %}
+                    <a href="{% url 'cart:add-item' course.slug %}" class="btn btn-info btn-block mt-3 py-2 font-13"><i
+                            class="fa fa-cart-plus align-middle"></i>
+                        افزودن
+                        به سبد خرید
+                    </a>
+                {% endif %}
                 <div class="card my-3 p-3"><!-- start tags -->
 
                     <p class="font-13"><i class="fa fa-tag align-middlle text-muted me-2 font-12"></i>برچسب ها :</p>
@@ -111,10 +115,10 @@
 
                         </div><!-- end course list item -->
                     {% else %}
-                        {% if allow %}
-                            <div class="d-flex align-items-center justify-content-between bg-light rounded shadow-sm mb-3 p-3">
-                                <!-- start course list item -->
 
+                        <div class="d-flex align-items-center justify-content-between bg-light rounded shadow-sm mb-3 p-3">
+                            <!-- start course list item -->
+                            {% if allow %}
                                 <div class="d-flex align-items-center">
 
                                     <i class="fa fa-check play-icon"></i>
@@ -125,10 +129,8 @@
 
                                 <a href="{{ video.video.url }}"><i class="fa fa-download text-muted"></i></a>
 
-                            </div><!-- end course list item -->
-                        {% else %}
-                            <div class="d-flex align-items-center justify-content-between bg-light rounded shadow-sm mb-3 p-3">
-                                <!-- start course list item -->
+
+                            {% else %}
 
                                 <div class="d-flex align-items-center">
 
@@ -139,10 +141,11 @@
                                 </div>
 
                                 <a href=""><i class="fa fa-download text-muted"></i></a>
+                            {% endif %}
 
-                            </div><!-- end course list item -->
-                        {% endif %}
+                        </div><!-- end course list item -->
                     {% endif %}
+
                 {% endfor %}
             </div><!-- end course content -->
 
@@ -162,159 +165,62 @@
 
         </div>
 
-        <a href="{% url 'course:all' %}" class="title-btn align-self-start">همه دوره ها <i class="fa fa-arrow-left align-middle"></i></a>
+        <a href="{% url 'course:all' %}" class="title-btn align-self-start">همه دوره ها <i
+                class="fa fa-arrow-left align-middle"></i></a>
 
     </div><!-- end title-->
 
     <div class="container"><!-- start course box -->
 
         <div class="row">
+            {% for item in suggested_courses %}
+                <div class="col-lg-4 col-sm-6 "><!-- start course item -->
 
-            <div class="col-lg-4 col-sm-6 "><!-- start course item -->
+                    <div class="card custom-card mb-3 shadow-sm">
 
-                <div class="card custom-card mb-3 shadow-sm">
+                        <div class="sub-layer">
 
-                    <div class="sub-layer">
+                            <img src="{{ item.image.url }}" class="img-fluid">
 
-                        <img src="{% static 'images/html.jpg' %}" class="img-fluid">
+                            <div class="over-layer">
 
-                        <div class="over-layer">
+                                <a href="{% url 'course:detail' item.slug %}" class="btn btn-info">مشاهده و خرید</a>
 
-                            <a href="course.html" class="btn btn-info">مشاهده و خرید</a>
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <a href="{% url 'course:detail' item.slug %}"
+                               class="text-dark d-block mb-2">{{ item.title }}</a>
+
+                            <p class="font-13 text-justify line-height vazir-font">{{ item.description }}</p>
+
+                        </div>
+
+                        <div class="card-footer">
+                            {% if item.tutor.image %}
+                                <img src="{{ item.tutor.image.url }}" class="team-icon">
+                            {% else %}
+                                <img src="{% static 'images/avatar.png' %}" class="team-icon">
+                            {% endif %}
+                            <span class="font-12 vazir-font">{{ item.tutor.full_name }}</span>
+
+                            <div class="float-end mt-1">
+                                {% if item.is_free %}
+                                    <span class="text-success font-12">رایگان !</span>
+                                {% else %}
+                                    <span class="text-success font-12">{{ item.price }}</span>
+                                {% endif %}
+                            </div>
 
                         </div>
 
                     </div>
 
-                    <div class="card-body">
-
-                        <a href="course.html" class="text-dark d-block mb-2"> آموزش حرفه ای Flutter</a>
-
-                        <p class="font-13 text-justify line-height vazir-font">لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم
-                            از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-
-                    </div>
-
-                    <div class="card-footer">
-
-                        <img src="{% static 'images/team_2.jpg' %}" class="team-icon">
-
-                        <span class="font-12 vazir-font">علی نوروزی</span>
-
-                        <div class="float-end mt-1">
-
-                            <span class="text-success font-12">رایگان !</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end course item -->
-
-
-            <div class="col-lg-4 col-sm-6"><!-- start course item -->
-
-                <div class="card custom-card mb-3 shadow-sm">
-
-                    <div class="sub-layer">
-
-                        <img src="{% static 'images/flutter.png' %}" class="img-fluid">
-
-                        <div class="over-layer">
-
-                            <a href="course.html" class="btn btn-info">مشاهده و خرید</a>
-
-                        </div>
-
-                    </div>
-
-                    <div class="card-body">
-
-                        <a href="course.html" class="text-dark d-block mb-2"> آموزش حرفه ای Flutter</a>
-
-                        <p class="font-13 text-justify line-height vazir-font">لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم
-                            از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-
-                    </div>
-
-                    <div class="card-footer">
-
-                        <img src="{% static 'images/team_4.jpg' %}" class="team-icon">
-
-                        <span class="font-12 vazir-font">سارا رضایی</span>
-
-                        <div class="float-end mt-1">
-
-                            <del class="text-muted font-12 me-2">320.000 تومان</del>
-
-                            <span class="text-success font-12">200.000 تومان</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end course item -->
-
-
-            <div class="col-lg-4 col-sm-6"><!-- start course item -->
-
-                <div class="card custom-card mb-3 shadow-sm">
-
-                    <div class="sub-layer">
-
-                        <img src="{% static 'images/js.png' %}" class="img-fluid">
-
-                        <div class="over-layer">
-
-                            <a href="course.html" class="btn btn-info">مشاهده و خرید</a>
-
-                        </div>
-
-                    </div>
-
-                    <div class="card-body">
-
-                        <a href="course.html" class="text-dark d-block mb-2">آموزش پیشرفته جاوا اسکریپت</a>
-
-                        <p class="font-13 text-justify line-height vazir-font">لورم ایپسوم متن ساختگی با تولید سادگی
-                            نامفهوم
-                            از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است.
-                            چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.
-                        </p>
-
-                    </div>
-
-                    <div class="card-footer">
-
-                        <img src="{% static 'images/team_2.jpg' %}" class="team-icon">
-
-                        <span class="font-12 vazir-font">علی نوروزی</span>
-
-                        <div class="float-end mt-1">
-
-                            <span class="text-success font-12">400.000 تومان</span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div><!-- end course item -->
-
+                </div><!-- end course item -->
+            {% endfor %}
         </div>
 
     </div><!-- end course box -->

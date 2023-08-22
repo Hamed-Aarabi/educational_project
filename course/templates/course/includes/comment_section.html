@@ -216,31 +216,15 @@
                                             class="fa fa-forward me-1 text-success"></i>{{ course.tutor.tutor_courses.all.count }} دوره</span>
 
                                     <span class="font-12 text-muted me-4"><i
-                                            class="fa fa-user me-1"></i> عضویت 4سال</span>
+                                            class="fa fa-user me-1"></i>{% if tutor_date_joined == 0 %} عضویت کمتر از 1
+                                        سال{% else %} عضویت {{ tutor_date_joined }}سال{% endif %}</span>
 
-                                    <p class="font-13 line-height vazir-font text-justify my-3">لورم ایپسوم متن
-                                        ساختگی
-                                        با تولید سادگی نامفهوم از صنعت چاپ و با استفاده
-                                        از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان
-                                        که
-                                        لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود
-                                        ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده
-                                        شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را
-                                        برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی
-                                        ایجاد
-                                        کرد.
-                                    </p>
+                                    <p class="font-13 line-height vazir-font text-justify my-3">{{ course.tutor.teacher.about_me }}</p>
 
                                     <div class="teacher-social-media">
-
-                                        <a href="#"><i class="fab fa-instagram"></i></a>
-
-                                        <a href="#"><i class="fab fa-twitter"></i></a>
-
-                                        <a href="#"><i class="fab fa-telegram"></i></a>
-
-                                        <a href="#"><i class="fab fa-linkedin"></i></a>
-
+                                        {% for social in course.tutor.teacher.teacher_socials.all %}
+                                            <a href="{{social.link}}"><i class="fab fa-{{ social.social }}"></i></a>
+                                        {% endfor %}
                                     </div>
 
                                 </div>

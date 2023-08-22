@@ -101,12 +101,9 @@
                                         کاربر</a></li>
 
 
-                                    <li class="menu-item-2"><a href="teach.html">درخواست تدریس</a></li>
+                                    <li class="menu-item-2"><a href="{% url 'teacher:teach_page' %}">درخواست تدریس</a></li>
 
                                     <li class="menu-item-2"><a href="{% url 'cart:detail' %}">سبد خرید </a></li>
-
-
-                                    <li class="menu-item-2"><a href="404.html">صفحه 404</a></li>
 
                                 {% else %}
                                     <li class="menu-item-2"><a href="{% url 'account:signup' %}">ثبت نام</a></li>

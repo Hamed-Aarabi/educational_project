@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'cart.apps.CartConfig',
     'common_views.apps.CommonViewsConfig',
     'teacher.apps.TeacherConfig',
+    'notification.apps.NotificationConfig',
 
     'django.contrib.humanize',
     'django_cleanup.apps.CleanupConfig',
@@ -81,6 +82,7 @@ TEMPLATES = [
                 'context_processors.context_processors.get_tags_course',
                 'context_processors.context_processors.get_tags_blog',
                 'context_processors.context_processors.cart_item',
+                'context_processors.context_processors.contactus_way',
 
             ],
         },

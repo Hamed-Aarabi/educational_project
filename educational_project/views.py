@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.generic import TemplateView
-
+from django.views.generic import TemplateView, View
+from account.models import MyUser
 from contactus.forms import CounselForm
 from contactus.models import Counsel
 from course.models import Course
@@ -17,6 +17,8 @@ class HomeView(TemplateView):
         context['newest_courses'] = Course.objects.filter(created_at__gte=datetime.now() - timedelta(days=2))
         context['random_articles'] = Article.objects.order_by('?')[:3]
         context['form'] = CounselForm
+        context['course_count'] = Course.objects.all().count()
+        context['user_count'] = MyUser.objects.all().count()
         return context
 
     def post(self, request):
@@ -25,3 +27,7 @@ class HomeView(TemplateView):
             cd = form.cleaned_data
             Counsel.objects.create(**cd)
         return JsonResponse({'status': 'success'})
+
+
+def error_404_view(request, exception):
+    return render(request, '404.html')

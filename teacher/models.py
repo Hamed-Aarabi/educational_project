@@ -5,7 +5,7 @@ from account.models import MyUser
 class Teacher(models.Model):
     teacher = models.OneToOneField(MyUser, on_delete=models.CASCADE)
     field = models.CharField(max_length=150)
-
+    about_me = models.TextField(null=True)
     def __str__(self):
         return self.teacher.username
 
@@ -19,7 +19,7 @@ class SocialMedia(models.Model):
     )
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='teacher_socials')
     social = models.CharField(max_length=100, choices=SOCIAL_MEDIA_CHOICES)
-
+    link = models.URLField(null=True)
     def __str__(self):
         return f'{self.teacher}'
 

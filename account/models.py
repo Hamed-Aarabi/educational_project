@@ -1,16 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from .managers import MyUserManager
-# from teach.models import Teacher
-
-CHOICE_SEX = (
-    ('man', 'مرد'),
-    ('woman', 'زن'),
-    ('other', 'دیگر'),
-)
 
 
 class MyUser(AbstractBaseUser):
+    CHOICE_SEX = (
+        ('man', 'مرد'),
+        ('woman', 'زن'),
+        ('other', 'دیگر'),
+    )
     email = models.EmailField(verbose_name="آدرس ایمیل", max_length=255, null=True)
     first_name = models.CharField(verbose_name='نام', max_length=255)
     last_name = models.CharField(verbose_name='نام خانوادگی', max_length=255)
@@ -18,6 +16,7 @@ class MyUser(AbstractBaseUser):
     image = models.ImageField(upload_to='profiles', blank=True)
     phone = models.CharField(max_length=12, unique=True, verbose_name='شماره تلفن')
     sex = models.CharField(choices=CHOICE_SEX, max_length=5, verbose_name='جنسیت')
+    date_joined = models.DateTimeField(auto_now_add=True, null=True, editable=False)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     is_student = models.BooleanField(default=True)

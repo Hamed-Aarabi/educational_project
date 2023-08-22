@@ -31,5 +31,6 @@ urlpatterns = [
                   path('teach/', include('teacher.urls')),
                   path('cart/', include('cart.urls')),
 
-
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'educational_project.views.error_404_view'

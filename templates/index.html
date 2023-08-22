@@ -12,39 +12,6 @@
         <a href="{% url 'course:all' %}" class="btn btn-warning font-13 p-3 mt-4">همین حالا شروع کنید <i
                 class="fa fa-angle-left align-middle ms-1"></i></a>
 
-        <div class="col-md-6 icon-box mx-auto "><!-- start icon box -->
-
-            <div class="row">
-
-                <div class="col-4 text-center">
-
-                    <img src="{% static 'images/student.png' %}" class="banner-icon">
-
-                    <p class="mt-3 text-white font-14 ">دانش آموزان : <span class="countfect" data-num="1200"></span>+
-                    </p>
-
-                </div>
-
-                <div class="col-4 text-center">
-
-                    <img src="{% static 'images/course.png' %}" class="banner-icon">
-
-                    <p class="mt-3 text-white font-14">دوره های آموزشی : <span class="countfect" data-num="160"></span>+
-                    </p>
-
-                </div>
-
-                <div class="col-4 text-center">
-
-                    <img src="{% static 'images/prize.png' %}" class="banner-icon">
-
-                    <p class="mt-3 text-white font-14">جوایز : <span class="countfect" data-num="12"></span>+</p>
-
-                </div>
-
-            </div>
-
-        </div><!-- end icon box -->
 
     </div><!-- end banner -->
 
@@ -95,15 +62,19 @@
                         </div>
 
                         <div class="card-footer">
-
-                            <img src="{{ course.tutor.image.url }}" class="team-icon">
-
+                            {% if course.tutor.image %}
+                                <img src="{{ course.tutor.image.url }}" class="team-icon">
+                            {% else %}
+                                <img src="{% static 'images/avatar.png' %}" class="team-icon">
+                            {% endif %}
                             <span class="font-12 vazir-font">{{ course.tutor.full_name }}</span>
 
                             <div class="float-end mt-1">
-
-                                <span class="text-success font-12">{{ course.price }}</span>
-
+                                {% if course.is_free %}
+                                    <span class="text-success font-12">رایگان!</span>
+                                {% else %}
+                                    <span class="text-success font-12">{{ course.price }}</span>
+                                {% endif %}
                             </div>
 
                         </div>

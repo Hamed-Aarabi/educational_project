@@ -1,21 +1,22 @@
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
     PasswordResetCompleteView
 from django.urls import reverse_lazy
-from django.views.generic import FormView, TemplateView, View, UpdateView, ListView
+from django.views.generic import FormView, View, ListView
 from blog.models import *
 from course.models import *
-from .forms import UserCreationForm, LoginForm, MyPasswordResetForm, MyPasswordConfirmForm, UserChangeForm
+from .forms import *
 from .models import MyUser, Ticket
 from django.shortcuts import redirect, render, get_object_or_404
-from django.db.models import Q
+from notification.models import Notification
 
 
 class SignUpView(FormView):
     template_name = 'account/sign_up.html'
     form_class = UserCreationForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('account:login')
 
     def form_valid(self, form):
         cd = form.cleaned_data
@@ -71,8 +72,9 @@ class UserPanelView(View):
         user = MyUser.objects.get(username=username)
         user_courses = user.student_courses.all().count()
         courses = Course.objects.all().count()
-
-        return render(request, 'account/profile.html', {'user': user, 'courses': courses, 'user_courses': user_courses})
+        notify = Notification.objects.all().order_by('-created_at')[:3]
+        return render(request, 'account/profile.html',
+                      {'user': user, 'courses': courses, 'user_courses': user_courses, 'notify': notify})
 
 
 def user_update_view(request, username):
@@ -85,6 +87,13 @@ def user_update_view(request, username):
     else:
         form = UserChangeForm(instance=user)
     return render(request, 'account/profile_update.html', {'form': form})
+
+
+@login_required
+def delete_image(request, username):
+    user = MyUser.objects.get(username=username)
+    user.image.delete()
+    return redirect('account:user_panel', username)
 
 
 class UserCoursesView(ListView):
