@@ -10,7 +10,7 @@ from course.models import *
 from .forms import *
 from .models import MyUser, Ticket
 from django.shortcuts import redirect, render, get_object_or_404
-from notification.models import Notification
+from notification.models import *
 
 
 class SignUpView(FormView):

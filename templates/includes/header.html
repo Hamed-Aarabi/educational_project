@@ -32,11 +32,11 @@
                         <div class="cart-item d-flex align-items-center justify-content-between">
                             <!-- start cart item -->
 
-                            <a href="course.html"><img src="{{ item.image }}"></a>
+                            <a href="{% url 'course:detail' item.course.slug %}"><img src="{{ item.image }}"></a>
 
                             <div class="cart-item-detail">
 
-                                <a href="course.html">{{ item.name }}</a>
+                                <a href="{% url 'course:detail' item.course.slug %}">{{ item.name }}</a>
 
                                 <p class="font-12 text-muted mt-3">{{ item.price }} تومان</p>
 
@@ -59,7 +59,7 @@
 
                 </div>
 
-                <a href="#" class="btn btn-info font-13 m-2 p-2">پرداخت</a>
+                <a href="{% url 'cart:order-create'  %}" class="btn btn-info font-13 m-2 p-2">پرداخت</a>
 
                 <a href="{% url 'cart:detail' %}" class="btn btn-secondary font-13 m-2 p-2">مشاهده سبد خرید</a>
 

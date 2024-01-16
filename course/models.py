@@ -46,7 +46,7 @@ class Course(models.Model):
     tutor = models.ForeignKey(MyUser, null=True, blank=True, related_name='tutor_courses', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='course', verbose_name='تصویر دوره')
     level = models.CharField(max_length=255, verbose_name='سطح دوره')
-    price = models.CharField(max_length=255, verbose_name='قیمت دوره')
+    price = models.PositiveIntegerField(verbose_name='قیمت دوره')
     course_status = models.CharField(max_length=255, verbose_name='وضعیت دوره')
     slug = models.SlugField(blank=True, allow_unicode=True, unique=True)
     tag = models.ManyToManyField(Tag, verbose_name='برچسب ها', related_name='tags_of_course')
@@ -54,6 +54,9 @@ class Course(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_free = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
+    is_discount = models.BooleanField(default=False)
+    discount_price = models.PositiveIntegerField(blank=True, null=True)
+    discount_percentage = models.PositiveIntegerField(null=True, blank=True)
     category = models.ManyToManyField(Category, related_name='course_category')
 
     def __str__(self):
@@ -66,6 +69,10 @@ class Course(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title, allow_unicode=True)
+        if self.is_discount:
+            self.discount_price = self.price - int((self.price * self.discount_percentage) / 100)
+        elif not self.is_discount:
+            self.discount_price = None
         super(Course, self).save(*args, **kwargs)
 
 

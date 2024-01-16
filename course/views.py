@@ -8,6 +8,7 @@ from .filters import course_filters
 from datetime import datetime
 from django.core.paginator import Paginator
 
+
 class CourseDetailView(View):
     def get(self, request, slug):
         app_name = get_app_name(request)
@@ -40,6 +41,7 @@ class CourseListView(ListView):
     paginate_by = 1
 
 
+
 class SearchBoxView(View):
     def get(self, request):
         query = self.request.GET.get('q')
@@ -49,7 +51,7 @@ class SearchBoxView(View):
         paginator = Paginator(courses, 1)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        return render(request, 'course/course_list.html', {'courses': page_obj, 'page_obj':page_obj})
+        return render(request, 'course/course_list.html', {'courses': page_obj, 'page_obj': page_obj})
 
 
 class CoursesFilter(ListView):

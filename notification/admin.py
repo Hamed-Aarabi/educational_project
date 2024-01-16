@@ -3,3 +3,4 @@ from .models import *
 
 
 admin.site.register(Notification)
+# admin.site.register(DiscountNotification)

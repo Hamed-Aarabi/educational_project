@@ -5,7 +5,6 @@ from .forms import UserCreationForm, UserChangeForm
 from .models import MyUser, Ticket
 
 
-
 class TicketFilterByStatus(admin.SimpleListFilter):
     parameter_name = 'status'
     title = 'پاسخ'
@@ -20,11 +19,11 @@ class TicketFilterByStatus(admin.SimpleListFilter):
         if self.value():
             return queryset.filter(status=self.value())
 
+
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'title', 'status', 'created_at')
     list_filter = (TicketFilterByStatus,)
-
 
 
 class UserAdmin(BaseUserAdmin):

@@ -216,7 +216,7 @@
                                             class="fa fa-forward me-1 text-success"></i>{{ course.tutor.tutor_courses.all.count }} دوره</span>
 
                                     <span class="font-12 text-muted me-4"><i
-                                            class="fa fa-user me-1"></i>{% if tutor_date_joined == 0 %} عضویت کمتر از 1
+                                            class="fa fa-user me-1"></i>{% if tutor_date_joined < 1 %} عضویت کمتر از 1
                                         سال{% else %} عضویت {{ tutor_date_joined }}سال{% endif %}</span>
 
                                     <p class="font-13 line-height vazir-font text-justify my-3">{{ course.tutor.teacher.about_me }}</p>
